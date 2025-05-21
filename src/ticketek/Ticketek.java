@@ -1,9 +1,12 @@
 package ticketek;
-
+import java.util.HashMap;
 import java.util.List;
 
-public class Ticketek implements ITicketek {
-
+public class Ticketek implements ITicketek{
+	
+	private HashMap<String ,Usuario> ListaDeUsuarios=new HashMap<>();
+	private HashMap<String ,Usuario> ListaDeEspectaculos=new HashMap<>();
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
@@ -31,8 +34,8 @@ public class Ticketek implements ITicketek {
 	}
 
 	@Override
-	public void registrarUsuario(String email, String nombre, String apellido, String contrasenia) {
-		// TODO Auto-generated method stub
+	public void registrarUsuario(String email, String nombre, String apellido, String contraseña) {
+		ListaDeUsuarios.put(email, new Usuario(nombre,apellido,contraseña));
 		
 	}
 

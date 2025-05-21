@@ -134,7 +134,7 @@ public class TicketekTest{
    
     @Test
     public void ej04_venderEntradaEstadio() {
-        List<IEntrada> entradas = ticketek.venderEntrada(
+        List<IEntrada> entrada = ticketek.venderEntrada(
         "Coldplay en vivo", 
         "28/07/25", 
         "nores@campus.ungs.edu.ar", 
@@ -142,11 +142,11 @@ public class TicketekTest{
         3);
         //no deberia lanzar nada
 
-        assertNotNull(entradas);
-        assertEquals(3, entradas.size());
-        for (int i = 0; i < entradas.size(); i++) {
-            assertNotNull(entradas.get(i));
-            assertEquals(90000.0, entradas.get(i).precio(),0.01);   
+        assertNotNull(entrada);
+        assertEquals(3, entrada.size());
+        for (int i = 0; i < entrada.size(); i++) {
+            assertNotNull(entrada.get(i));
+            assertEquals(90000.0, entrada.get(i).precio(),0.01);   
         }
     }
     
