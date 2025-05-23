@@ -35,7 +35,11 @@ public class Ticketek implements ITicketek{
 
 	@Override
 	public void registrarUsuario(String email, String nombre, String apellido, String contraseña) {
+		if(!ListaDeUsuarios.containsKey(email)) {
 		ListaDeUsuarios.put(email, new Usuario(nombre,apellido,contraseña));
+		} else {
+			System.out.println("Email ya registrado");
+		}
 		
 	}
 

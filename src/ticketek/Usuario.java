@@ -7,6 +7,7 @@ public class Usuario {
 	private String nombre;
 	private String apellido;
 	private String contraseña;
+	private String email;
 	private ArrayList<String> entradasCompradas;
 	
 	public Usuario(String nombre, String apellido, String contraseña){
@@ -19,12 +20,15 @@ public class Usuario {
 	}
 	
 	
-	private void comprarEntrada(Espectaculo,sede,asientos,contraseña) {}
+	private void comprarEntrada(Espectaculo espectaculo, Sede sede, String asientos, String contraseña) {
+	}
 	
-	public void consultarEntradaPorFechas(Fecha) {}
+	public void consultarEntradaPorFechas(String fecha) {
+	}
 	
-	private void consultarEntradasPasadas() {
+	public void consultarEntradasPasadas() {
 		
 		System.out.println(entradasCompradas.toString());
 	}
+	
 }
