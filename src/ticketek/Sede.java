@@ -6,7 +6,7 @@ public class Sede {
 	 public String direccion;	
 	 public String nombre;	
 	 int precioBase;
-	 private HashMap<String ,Espectaculo> ListaDeEspectaculos=new HashMap<>();
+	 //private HashMap<String ,Espectaculo> ListaDeEspectaculos=new HashMap<>();
 	 
 	 
 	 public Sede(String nombre,String direccion, int capacidad){
@@ -21,18 +21,25 @@ public class Sede {
 	  * @param nombre 
 	 solo habrá una fecha por sede. Y, no pueden
 	 haber dos espectáculos distintos el mismo día en la misma sede. Cada espectáculo tiene un
-	 código que será único.*/
+	 código que será único.
+	 !se cambió esa definición en el segundo enunciado. 
+	 dándole mas peso a la fecha que a la sede.
+	entonces quedó que un espectáculo tiene una única funcion por fecha y 
+	esta puede ser en cualquier sede, incluso repetir sede en distintos días¡.*/
 	 
-	 void registrarEspectaculo(String nombreEspectaculo, String fecha, int precioBase){
+	 /*void registrarEspectaculo(String nombreEspectaculo, String fecha, int precioBase){
 		 
 		 if(!ListaDeEspectaculos.containsKey(fecha)) {
-				ListaDeEspectaculos.put(fecha, new Espectaculo(nombre));
+				ListaDeEspectaculos.put(nombre, new Espectaculo(nombre));
 				} else {
-					System.out.println("Fecha ya registrada");}
+					System.out.println("Espectaculo ya registrado");}
 		 
 	 }
+	 */
 	
-	public double calcularPrecio() {
-    return precioBase;
+	public void calcularPrecio() {
+    
     }
+	
+	
 }

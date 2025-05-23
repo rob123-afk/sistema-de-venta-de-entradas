@@ -5,8 +5,8 @@ import java.util.List;
 public class Ticketek implements ITicketek{
 	
 	private HashMap<String ,Usuario> ListaDeUsuarios=new HashMap<>();
-	
-	private HashMap<String ,Sede> ListaDeSedes=new HashMap<>();
+	private HashMap<String ,Espectaculo> ListaDeEspectaculos=new HashMap<>(); //key nombre
+	private HashMap<String ,Sede> ListaDeSedes=new HashMap<>(); //key nombre
 
 	
 	public static void main(String[] args) {
@@ -34,8 +34,12 @@ public class Ticketek implements ITicketek{
 	public void registrarSede(String nombre, String direccion, int capacidadMaxima, int asientosPorFila,
 			String[] sectores, int[] capacidad, int[] porcentajeAdicional) {
 		
-		ListaDeSedes.put(nombre, new Teatro(nombre,direccion,capacidadMaxima));
-		
+		if(!ListaDeSedes.containsKey(nombre)) {
+			ListaDeSedes.put(nombre, new Teatro(nombre,direccion,capacidadMaxima,asientosPorFila,
+			sectores, capacidad, porcentajeAdicional));
+			} else {
+				System.out.println("teatro ya registrado");
+			}		
 	}
 
     /**
@@ -61,8 +65,12 @@ public class Ticketek implements ITicketek{
 	public void registrarSede(String nombre, String direccion, int capacidadMaxima, int asientosPorFila,
 			int cantidadPuestos, double precioConsumicion, String[] sectores, int[] capacidad,
 			int[] porcentajeAdicional) {	
-			ListaDeSedes.put(nombre, new Miniestadio(nombre,direccion,capacidadMaxima,precioConsumicion));
 			
+			if(!ListaDeSedes.containsKey(nombre)) {
+				ListaDeSedes.put(nombre, new Miniestadio(nombre,direccion,capacidadMaxima,precioConsumicion));
+				} else {
+					System.out.println("miniestadio ya registrada");
+				}		
 		
 		
 	}
@@ -80,8 +88,13 @@ public class Ticketek implements ITicketek{
 	 */
 
 	public void registrarSede(String nombre, String direccion, int capacidadMaxima) {
-
-		ListaDeSedes.put(direccion, new Estadio(nombre,direccion,capacidadMaxima));
+		
+		if(!ListaDeSedes.containsKey(nombre)) {
+			ListaDeSedes.put(direccion, new Estadio(nombre,direccion,capacidadMaxima));
+			} else {
+				System.out.println("Estadio ya registrada");
+			}		
+		
 
 		}
 
@@ -110,15 +123,24 @@ public class Ticketek implements ITicketek{
     * @param fecha en formato: dd/mm/YY
     * @param sede
     * @param precioBase*/
-	public void registrarEspectaculo(String nombreEspectaculo, String fecha, Sede sede, int precioBase) {
-		
-		
+	public void registrarEspectaculo(String nombre) {
+		if(!ListaDeEspectaculos.containsKey(nombre)) {
+			ListaDeEspectaculos.put(nombre, new Espectaculo(nombre));;
+			} else {
+				System.out.println("espectaculo ya registrado");
+			}
+				
 	}
 
-	@Override
 	public void agregarFuncion(String nombreEspectaculo, String fecha, String sede, double precioBase) {
-		// TODO Auto-generated method stub
 		
+		if(!ListaDeSedes.containsKey(sede)) {
+			
+				System.out.println("ingresaste una sede no registrada");
+			}		
+		
+		
+		ListaDeEspectaculos.get(nombreEspectaculo).agregarFuncion(fecha, ListaDeSedes.get(sede), precioBase);
 	}
 
 	@Override
@@ -201,11 +223,7 @@ public class Ticketek implements ITicketek{
 		return 0;
 	}
 
-	@Override
-	public void registrarEspectaculo(String nombre) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 
 
 
