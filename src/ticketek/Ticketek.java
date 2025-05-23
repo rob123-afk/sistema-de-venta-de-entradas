@@ -5,35 +5,97 @@ import java.util.List;
 public class Ticketek implements ITicketek{
 	
 	private HashMap<String ,Usuario> ListaDeUsuarios=new HashMap<>();
-	private HashMap<String ,Usuario> ListaDeEspectaculos=new HashMap<>();
+	
+	private HashMap<String ,Sede> ListaDeSedes=new HashMap<>();
+
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
 	}
+	
 
-	@Override
-	public void registrarSede(String nombre, String direccion, int capacidadMaxima) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
+    /**
+     * 1) Registra las sedes con asientos y sin puestos de venta, teatros.
+     * Estos reciben la informacion de los sectores como parámetros.
+     * 
+     * Si el nombre ya está registrado, se debe lanzar una excepcion.
+     * Si algun dato no es aceptable, se debe lanzar una excepcion.
+     * 
+     * @param nombre
+     * @param direccion
+     * @param capacidadMaxima
+     * @param asientosPorFila
+     * @param sectores
+     * @param capacidad
+     * @param porcentajeAdicional
+     */
+	
 	public void registrarSede(String nombre, String direccion, int capacidadMaxima, int asientosPorFila,
 			String[] sectores, int[] capacidad, int[] porcentajeAdicional) {
-		// TODO Auto-generated method stub
+		
+		ListaDeSedes.put(nombre, new Teatro(nombre,direccion,capacidadMaxima));
 		
 	}
 
-	@Override
+    /**
+     * 1) Registra las sedes con asientos y puestos de venta, miniestadios.
+     * Estos reciben la informacion de los sectores como parámetros.
+     * tambien el adicional por consumición y tambien la cantidad de puestos.
+     * 
+     * Si el nombre ya está registrado, se debe lanzar una excepcion.
+     * Si algun dato no es aceptable, se debe lanzar una excepcion.
+     * 
+     * @param nombre
+     * @param direccion
+     * @param capacidadMaxima
+     * @param asientosPorFila
+     * @param cantidadPuestos
+     * @param precioConsumicion
+     * @param sectores
+     * @param capacidad
+     * @param porcentajeAdicional
+     */
+	
+	
 	public void registrarSede(String nombre, String direccion, int capacidadMaxima, int asientosPorFila,
 			int cantidadPuestos, double precioConsumicion, String[] sectores, int[] capacidad,
-			int[] porcentajeAdicional) {
-		// TODO Auto-generated method stub
+			int[] porcentajeAdicional) {	
+			ListaDeSedes.put(nombre, new Miniestadio(nombre,direccion,capacidadMaxima,precioConsumicion));
+			
+		
 		
 	}
+			
+	 /**
+	 * 1) Registra las sedes que no tienen asientos,(estadios).
+	 * Estas tienen un unico sector llamado campo.
+	 * 
+	 * Si el nombre ya está registrado, se debe lanzar una excepcion.
+	 * Si algun dato no es aceptable, se debe lanzar una excepcion.
+	 * 
+	 * @param nombre
+	 * @param direccion
+	 * @param capacidadMaxima
+	 */
 
-	@Override
+	public void registrarSede(String nombre, String direccion, int capacidadMaxima) {
+
+		ListaDeSedes.put(direccion, new Estadio(nombre,direccion,capacidadMaxima));
+
+		}
+
+	/**
+     * 2) Registrar un nuevo usuario en el sistema
+     * 
+     * Si el email ya está registrado, se debe lanzar una excepcion
+     * Si algun dato no es aceptable, se debe lanzar una excepcion.
+     * 
+     * @param email
+     * @param nombre
+     * @param apellido
+     * @param contraseña
+     */
 	public void registrarUsuario(String email, String nombre, String apellido, String contraseña) {
 		if(!ListaDeUsuarios.containsKey(email)) {
 		ListaDeUsuarios.put(email, new Usuario(nombre,apellido,contraseña));
@@ -43,9 +105,13 @@ public class Ticketek implements ITicketek{
 		
 	}
 
-	@Override
-	public void registrarEspectaculo(String nombre) {
-		// TODO Auto-generated method stub
+/*
+    * @param nombreEspectaculo
+    * @param fecha en formato: dd/mm/YY
+    * @param sede
+    * @param precioBase*/
+	public void registrarEspectaculo(String nombreEspectaculo, String fecha, Sede sede, int precioBase) {
+		
 		
 	}
 
@@ -134,5 +200,14 @@ public class Ticketek implements ITicketek{
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+	@Override
+	public void registrarEspectaculo(String nombre) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
 
 }

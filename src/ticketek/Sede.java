@@ -1,24 +1,38 @@
 package ticketek;
-
-public abstract class Sede {
+import java.util.*;
+public class Sede {
 	
 	 int capacidad;	
-	 String direccion;	
-	 String nombre;	
+	 public String direccion;	
+	 public String nombre;	
 	 int precioBase;
+	 private HashMap<String ,Espectaculo> ListaDeEspectaculos=new HashMap<>();
 	 
+	 
+	 public Sede(String nombre,String direccion, int capacidad){
+		 
+		 this.nombre=nombre;
+		 this.direccion=direccion;
+		 this.capacidad=capacidad;
+		 
+	 }
+	 
+	 /*
+	  * @param nombre 
+	 solo habrá una fecha por sede. Y, no pueden
+	 haber dos espectáculos distintos el mismo día en la misma sede. Cada espectáculo tiene un
+	 código que será único.*/
+	 
+	 void registrarEspectaculo(String nombreEspectaculo, String fecha, int precioBase){
+		 
+		 if(!ListaDeEspectaculos.containsKey(fecha)) {
+				ListaDeEspectaculos.put(fecha, new Espectaculo(nombre));
+				} else {
+					System.out.println("Fecha ya registrada");}
+		 
+	 }
 	
-    double calcularPrecio(double precioBase, String sector) {
-    	if (sector.equals("Vip")) {
-    		return precioBase * 1.70;
-    	}
-    	if (sector.equals("común")) {
-    		return precioBase * 1.40;
-    	}
-    	if (sector.equals("baja")) {
-    		return precioBase * 1.50;
-    	}
-    	return precioBase;
-    
+	public double calcularPrecio() {
+    return precioBase;
     }
 }

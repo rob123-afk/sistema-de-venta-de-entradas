@@ -6,13 +6,18 @@ public class Espectaculo {
 
 	protected String nombre;
 	protected ArrayList<String> funciones;
-	protected Sede sede;
+	protected String Codigo;
 	
 	
-	public Espectaculo(String nombre, ArrayList<String> funciones, Sede sede) {
+	public Espectaculo(String nombre) {
 		this.nombre = nombre;
-		this.funciones = funciones;
-		this.sede = sede;
+		
+		generarCodigo();
+		
+	}
+
+	private void generarCodigo() {
+		
 	}
 	
 }
