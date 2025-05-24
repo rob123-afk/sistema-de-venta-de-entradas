@@ -34,4 +34,7 @@ public interface IEntrada {
 	 * @return
 	 */
 	String toString();
+	
+	
+	String obtenerCodigo();
 }

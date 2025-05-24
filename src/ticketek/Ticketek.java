@@ -176,15 +176,31 @@ public class Ticketek implements ITicketek{
 	}
 
 	@Override
-	public List<IEntrada> listarTodasLasEntradasDelUsuario(String email, String contrasenia) {
-		// TODO Auto-generated method stub
+	public List<IEntrada> listarTodasLasEntradasDelUsuario(String email, String contraseña) {
+		if (ListaDeUsuarios.containsKey(email)) {
+			Usuario usuario = ListaDeUsuarios.get(email);
+		if (usuario.comprobarContraseña(contraseña) && usuario.comprobarEmail(email)) {
+			return usuario.devolverEntradasCompradas();
+		} else {
+			System.out.println("Contraseña incorrecta.");
+			}
+		}
+		else {
+			System.out.println("Usuario no encontrado");
+		}
 		return null;
 	}
 
 	@Override
-	public boolean anularEntrada(IEntrada entrada, String contrasenia) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean anularEntrada(IEntrada entrada, String contraseña) {
+		Usuario usuarioEncontrado = ListaDeUsuarios.get(contraseña);
+		if (usuarioEncontrado != null) {
+			System.out.println("Entrada anulada con exito");
+			return usuarioEncontrado.anularEntrada(entrada.obtenerCodigo());
+		} else {
+			System.out.println("No se encontró ningún usuario");
+			return false;
+		}
 	}
 
 	@Override
@@ -201,14 +217,44 @@ public class Ticketek implements ITicketek{
 
 	@Override
 	public double costoEntrada(String nombreEspectaculo, String fecha) {
-		// TODO Auto-generated method stub
-		return 0;
+		Espectaculo espectaculo = ListaDeEspectaculos.get(nombreEspectaculo);
+		if(espectaculo== null) {
+			System.out.println("Espectaculo no encontrado");
+			return 0.0;
+		}
+		Funcion funcion = espectaculo.devolverFunciones().get(fecha);
+		if(funcion == null) {
+			System.out.println("En esa fecha no está registrado el espectaculo");
+			return 0.0;
+		}
+		return funcion.devolverPrecio();
 	}
 
 	@Override
 	public double costoEntrada(String nombreEspectaculo, String fecha, String sector) {
-		// TODO Auto-generated method stub
-		return 0;
+		Espectaculo espectaculo = ListaDeEspectaculos.get(nombreEspectaculo);
+		if(espectaculo== null) {
+			System.out.println("Espectaculo no encontrado");
+			return 0.0;
+		}
+		Funcion funcion = espectaculo.devolverFunciones().get(fecha);
+		if(funcion == null) {
+			System.out.println("En esa fecha no está registrado el espectaculo");
+			return 0.0;
+		}
+		if(sector.equals("Platea baja")) {
+		return funcion.devolverPrecioPlateaBaja();
+		}
+		if(sector.equals("Platea Alta")) {
+		return funcion.devolverPrecio();
+		}
+		if(sector.equals("Platea VIP")) {
+		return funcion.devolverPrecioVIP();
+		}
+		if(sector.equals("Platea Comun")) {
+		return funcion.devolverPrecioPlateaComun();
+		}
+		return 0.0;
 	}
 
 	@Override
