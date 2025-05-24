@@ -38,7 +38,7 @@ public class Ticketek implements ITicketek{
 			ListaDeSedes.put(nombre, new Teatro(nombre,direccion,capacidadMaxima,asientosPorFila,
 			sectores, capacidad, porcentajeAdicional));
 			} else {
-				System.out.println("teatro ya registrada");
+				System.out.println("teatro ya registrado");
 			}		
 	}
 
