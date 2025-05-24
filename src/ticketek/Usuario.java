@@ -1,6 +1,8 @@
 package ticketek;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.HashMap;
 
 public class Usuario {
 	
@@ -8,7 +10,7 @@ public class Usuario {
 	private String apellido;
 	private String contraseña;
 	private String email;
-	private ArrayList<String> entradasCompradas;
+	private HashMap<String, IEntrada> entradasCompradas;
 	
 	public Usuario(String nombre, String apellido, String contraseña){
 		
@@ -30,5 +32,36 @@ public class Usuario {
 		
 		System.out.println(entradasCompradas.toString());
 	}
+	
+	public boolean comprobarEmail(String email) {
+		return this.email.equals(email);
+	}
+	
+	public boolean comprobarContraseña(String contraseña) {
+		return this.contraseña.equals(contraseña);
+	}
+	
+	public List<IEntrada> devolverEntradasCompradas(){
+		return new ArrayList<>(entradasCompradas.values());
+	}
+	
+	public boolean anularEntrada(String codigo) {
+		return entradasCompradas.remove(codigo) != null;
+	}
+	
+//	public List<IEntrada> entradasCompradasPorUsuario(String email, String contraseña){
+//		if (ListaDeUsuarios.containsKey(email)) {
+//			Usuario usuario = ListaDeUsuarios.get(email);
+//		if (usuario.comprobarContraseña(contraseña) && usuario.comprobarEmail(email)) {
+//			return usuario.devolverEntradasCompradas();
+//		} else {
+//			System.out.println("Contraseña incorrecta.");
+//			}
+//		}
+//		else {
+//			System.out.println("Usuario no encontrado");
+//		}
+//		return null;
+//	}
 	
 }

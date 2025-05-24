@@ -28,4 +28,16 @@ public class Entrada implements IEntrada  {
 		return null;
 	}
 
+	@Override
+	public String toString() {
+		return "Entrada [contraseña=" + contraseña + ", categoria=" + categoria + ", codigo=" + codigo
+				+ ", nombreEspectaculo=" + nombreEspectaculo + ", fecha=" + fecha + ", ubicacion=" + ubicacion + "]";
+	}
+	
+	
+	public String obtenerCodigo() {
+		return codigo;
+	}
+
+
 }

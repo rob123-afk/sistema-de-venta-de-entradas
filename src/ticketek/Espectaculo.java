@@ -25,7 +25,9 @@ public class Espectaculo {
 			}
 	}
 	
-	
+	public HashMap<String, Funcion> devolverFunciones(){
+		return funciones;
+	}
 	
 	private void generarCodigo() {
 		

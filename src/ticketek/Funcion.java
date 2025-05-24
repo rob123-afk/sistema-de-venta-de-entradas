@@ -16,4 +16,20 @@ public class Funcion {
     public String getFecha() {
         return fecha;
     }
+    
+    public double devolverPrecio() {
+    	return precioBase;
+    }
+    
+    public double devolverPrecioPlateaBaja() {
+    	return precioBase * 1.40;
+    }
+    
+    public double devolverPrecioVIP() {
+    	return precioBase * 1.70;
+    }
+    
+    public double devolverPrecioPlateaComun() {
+    	return precioBase * 1.40;
+    }
 }
