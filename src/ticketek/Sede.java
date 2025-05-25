@@ -1,6 +1,6 @@
 package ticketek;
 import java.util.*;
-public class Sede {
+public abstract class Sede {
 	
 	 int capacidad;	
 	 public String direccion;	
@@ -40,6 +40,13 @@ public class Sede {
 	public void calcularPrecio() {
     
     }
+
+	public String devolverNombre() {
+		return nombre;
+	}
+	
+	public  abstract int devolverCapacidadTotal();
+	public abstract int capacidadPorSector(String nombreSector);
 	
 	
 }

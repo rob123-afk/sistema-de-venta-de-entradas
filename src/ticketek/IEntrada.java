@@ -40,6 +40,10 @@ public interface IEntrada {
 	
 	String obtenerCodigo();
 
+
 	
 	boolean esFuturo();
+
+	
+	
 }

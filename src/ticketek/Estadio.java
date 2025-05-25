@@ -10,6 +10,12 @@ public class Estadio extends Sede{
 		
 	}
 
+	public int capacidadPorSector(String nombreSector) {
+		return capacidad;
+	}
 	
+	public int devolverCapacidadTotal() {
+		return capacidad;
+	}
 
 }

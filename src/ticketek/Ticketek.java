@@ -1,5 +1,7 @@
 package ticketek;
+
 import java.time.LocalDate;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -161,14 +163,20 @@ public class Ticketek implements ITicketek{
 
 	@Override
 	public String listarFunciones(String nombreEspectaculo) {
-		// TODO Auto-generated method stub
-		return null;
+		Espectaculo espectaculoSolicitado = ListaDeEspectaculos.get(nombreEspectaculo);
+		if (espectaculoSolicitado == null) {
+			return "Espectáculo no encontrado";
+		}
+		return espectaculoSolicitado.listarFunciones();
 	}
 
 	@Override
 	public List<IEntrada> listarEntradasEspectaculo(String nombreEspectaculo) {
-		// TODO Auto-generated method stub
-		return null;
+		Espectaculo espectaculo = ListaDeEspectaculos.get(nombreEspectaculo);
+		if (espectaculo != null) {
+			return espectaculo.listarTodasLasEntradas();
+		}
+		return new ArrayList<>();
 	}
 
 	@Override
@@ -270,14 +278,40 @@ public class Ticketek implements ITicketek{
 
 	@Override
 	public double totalRecaudado(String nombreEspectaculo) {
-		// TODO Auto-generated method stub
-		return 0;
+		Espectaculo espectaculo = ListaDeEspectaculos.get(nombreEspectaculo);
+		
+		if (espectaculo == null) {
+			System.out.println("No se encontró el espectaculo");
+			return 0.0;
+		}
+		double total = 0.0;
+		
+		for (Funcion funcion: espectaculo.devolverFunciones().values()) {
+			for (IEntrada entrada : funcion.devolverEntradasVendidas()) {
+				total += entrada.precio();
+			}
+		}
+		return total;
 	}
 
 	@Override
 	public double totalRecaudadoPorSede(String nombreEspectaculo, String nombreSede) {
-		// TODO Auto-generated method stub
-		return 0;
+		Espectaculo espectaculo = ListaDeEspectaculos.get(nombreSede);
+		
+		if (espectaculo == null) {
+			System.out.println("No se encontró el espectáculo");
+			return 0.0;
+		}
+		double total = 0.0;
+		
+		for(Funcion funcion : espectaculo.devolverFunciones().values()) {
+			if (funcion.devolverSede().devolverNombre().equals(nombreSede)) {
+				for (IEntrada entrada : funcion.devolverEntradasVendidas()) {
+					total += entrada.precio();
+				}
+			}
+		}
+		return total;
 	}
 
 	

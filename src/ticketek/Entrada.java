@@ -42,6 +42,7 @@ public class Entrada implements IEntrada  {
 		return codigo;
 	}
 
+
 	@Override
 	public boolean esFuturo() {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
@@ -53,7 +54,11 @@ public class Entrada implements IEntrada  {
             return true;
         }
     
-        return false;
+        return false;}
+
+	public String obtenerSector() {
+		return categoria;
+
 	}
 
 	
