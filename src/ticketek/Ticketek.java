@@ -264,6 +264,7 @@ public class Ticketek implements ITicketek{
 		if(sector.equals("Platea Comun")) {
 		return funcion.devolverPrecioPlateaComun();
 		}
+		return 0.0;}
 		return 0.0;
 	}
 
