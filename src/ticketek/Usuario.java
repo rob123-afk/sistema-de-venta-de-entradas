@@ -2,6 +2,7 @@ package ticketek;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.HashMap;
 
 public class Usuario {
@@ -10,7 +11,7 @@ public class Usuario {
 	private String apellido;
 	private String contraseña;
 	private String email;
-	private HashMap<String, IEntrada> entradasCompradas;
+	private HashMap<String, Entrada> entradasCompradas;//key del HashMap
 	
 	public Usuario(String nombre, String apellido, String contraseña){
 		
@@ -22,8 +23,32 @@ public class Usuario {
 	}
 	
 	
-	private void comprarEntrada(Espectaculo espectaculo, Sede sede, String asientos, String contraseña) {
+	private void comprarEntrada(String contraseña,String categoria,String codigo, String nombreEspectaculo,String fecha,String sillas){
+		if(entradasCompradas.containsValue(sillas)) {System.out.println("sillas ya ocupadas");}
+		else {
+		Entrada entrada=new Entrada( contraseña, categoria, codigo,  nombreEspectaculo, fecha, sillas);
+		
+		entradasCompradas.put(generarCodigo(), entrada);
+		}
 	}
+	
+	private String generarCodigo() {
+		Random random = new Random();
+		String codigo="";
+		
+		
+		while(entradasCompradas.containsKey(codigo)) {
+			codigo="";
+			
+	        for (int i = 0; i < 5; i++) {
+	            // Genera una letra mayúscula aleatoria (A=65, Z=90 en ASCII)
+	            char letra = (char) (random.nextInt(26) + 'A');
+	            codigo=codigo+letra;
+	        }}
+			return codigo;
+	    }
+		
+	
 	
 	public void consultarEntradaPorFechas(String fecha) {
 	}
@@ -46,7 +71,11 @@ public class Usuario {
 	}
 	
 	public boolean anularEntrada(String codigo) {
-		return entradasCompradas.remove(codigo) != null;
+		if(!entradasCompradas.containsKey(codigo)) {System.out.println("codigo no existente");
+		return false;}
+		else{ entradasCompradas.remove(codigo);
+		return true;}
+		
 	}
 	
 //	public List<IEntrada> entradasCompradasPorUsuario(String email, String contraseña){
