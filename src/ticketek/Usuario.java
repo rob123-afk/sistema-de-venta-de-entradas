@@ -24,13 +24,12 @@ public class Usuario {
 	
 	
 	private void comprarEntrada(String contraseña,String categoria,String codigo, String nombreEspectaculo,String fecha,String sillas){
-		if(entradasCompradas.containsValue(sillas)) {System.out.println("sillas ya ocupadas");}
-		else {
+		
 		Entrada entrada=new Entrada( contraseña, categoria, codigo,  nombreEspectaculo, fecha, sillas);
 		
 		entradasCompradas.put(generarCodigo(), entrada);
 		}
-	}
+	
 	
 	private String generarCodigo() {
 		Random random = new Random();
