@@ -1,5 +1,8 @@
 package ticketek;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public class Entrada implements IEntrada  {
 	protected String contraseña;
 	protected String categoria;
@@ -39,5 +42,21 @@ public class Entrada implements IEntrada  {
 		return codigo;
 	}
 
+	@Override
+	public boolean esFuturo() {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
+		LocalDate hoy= LocalDate.now();
+		LocalDate fecha= LocalDate.parse(this.fecha,formatter);
+		
+		
+        if (fecha.isAfter(hoy)) {
+            return true;
+        }
+    
+        return false;
+	}
 
+	
+
+	
 }

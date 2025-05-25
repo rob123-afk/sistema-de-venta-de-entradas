@@ -18,6 +18,7 @@ public class Funcion {
     }
     
     public double devolverPrecio() {
+    	
     	return precioBase;
     }
     

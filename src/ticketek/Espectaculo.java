@@ -29,6 +29,13 @@ public class Espectaculo {
 		return funciones;
 	}
 	
+	public double consultarPrecio(String fecha) {
+		if(!funciones.containsKey(fecha)) 
+		{System.out.println("no hay espectaculos en la fecha indicada");
+		return 0;}
+		else{return funciones.get(fecha).devolverPrecio();}
+	}
+	
 	private void generarCodigo() {
 		
 	}

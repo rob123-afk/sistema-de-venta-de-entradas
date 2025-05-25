@@ -54,12 +54,10 @@ public class Usuario {
 	
 	public void consultarEntradasPasadas() {
 		
-		System.out.println(entradasCompradas.toString());
+		
 	}
 	
-	public boolean comprobarEmail(String email) {
-		return this.email.equals(email);
-	}
+	
 	
 	public boolean comprobarContraseña(String contraseña) {
 		return this.contraseña.equals(contraseña);

@@ -1,4 +1,6 @@
 package ticketek;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -170,23 +172,31 @@ public class Ticketek implements ITicketek{
 	}
 
 	@Override
-	public List<IEntrada> listarEntradasFuturas(String email, String contrasenia) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<IEntrada> listarEntradasFuturas(String email, String contraseña) {
+		List<IEntrada> entradas=listarTodasLasEntradasDelUsuario(email, contraseña);
+		
+		ArrayList <IEntrada>entradasFuturas=new ArrayList<IEntrada>();
+				
+		for (IEntrada entrada : entradas) {
+			
+			if(entrada.esFuturo()) { entradasFuturas.add(entrada);} 
+		}
+	        
+		return entradasFuturas;
 	}
 
 	@Override
 	public List<IEntrada> listarTodasLasEntradasDelUsuario(String email, String contraseña) {
-		if (ListaDeUsuarios.containsKey(email)) {
-			Usuario usuario = ListaDeUsuarios.get(email);
-		if (usuario.comprobarContraseña(contraseña) && usuario.comprobarEmail(email)) {
-			return usuario.devolverEntradasCompradas();
-		} else {
-			System.out.println("Contraseña incorrecta.");
-			}
+		if (!ListaDeUsuarios.containsKey(email)) {
+			System.out.println("Usuario no encontrado");
 		}
 		else {
-			System.out.println("Usuario no encontrado");
+			Usuario usuario = ListaDeUsuarios.get(email);
+			
+			if (usuario.comprobarContraseña(contraseña)) {
+				return usuario.devolverEntradasCompradas();
+			} else {
+				System.out.println("Contraseña incorrecta.");}
 		}
 		return null;
 	}
@@ -204,7 +214,7 @@ public class Ticketek implements ITicketek{
 	}
 
 	@Override
-	public IEntrada cambiarEntrada(IEntrada entrada, String contrasenia, String fecha, String sector, int asiento) {
+	public Entrada cambiarEntrada(IEntrada entrada, String contrasenia, String fecha, String sector, int asiento) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -217,26 +227,26 @@ public class Ticketek implements ITicketek{
 
 	@Override
 	public double costoEntrada(String nombreEspectaculo, String fecha) {
+		if(!ListaDeEspectaculos.containsKey(nombreEspectaculo)) 
+		{System.out.println("espectaculo no registrado");
+		return 0.0;}
 		Espectaculo espectaculo = ListaDeEspectaculos.get(nombreEspectaculo);
-		if(espectaculo== null) {
-			System.out.println("Espectaculo no encontrado");
-			return 0.0;
-		}
+		
+		/*rompe el encapsulamiento
 		Funcion funcion = espectaculo.devolverFunciones().get(fecha);
 		if(funcion == null) {
-			System.out.println("En esa fecha no está registrado el espectaculo");
+			System.out.println("En esa fecha no está registrado ningun espectaculo");
 			return 0.0;
-		}
-		return funcion.devolverPrecio();
+		}*/
+		return espectaculo.consultarPrecio(fecha);
 	}
 
 	@Override
 	public double costoEntrada(String nombreEspectaculo, String fecha, String sector) {
+		if(!ListaDeEspectaculos.containsKey(nombreEspectaculo)) 
+		{System.out.println("espectaculo no registrado");
 		Espectaculo espectaculo = ListaDeEspectaculos.get(nombreEspectaculo);
-		if(espectaculo== null) {
-			System.out.println("Espectaculo no encontrado");
-			return 0.0;
-		}
+		
 		Funcion funcion = espectaculo.devolverFunciones().get(fecha);
 		if(funcion == null) {
 			System.out.println("En esa fecha no está registrado el espectaculo");
