@@ -39,5 +39,8 @@ public class Entrada implements IEntrada  {
 		return codigo;
 	}
 
+	public String obtenerSector() {
+		return categoria;
+	}
 
 }

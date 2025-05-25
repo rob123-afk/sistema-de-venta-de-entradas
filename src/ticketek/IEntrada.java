@@ -37,4 +37,6 @@ public interface IEntrada {
 	
 	
 	String obtenerCodigo();
+	
+	String obtenerSector();
 }
