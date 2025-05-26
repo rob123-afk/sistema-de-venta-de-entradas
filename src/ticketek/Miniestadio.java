@@ -1,16 +1,25 @@
 package ticketek;
 
 public class Miniestadio extends Sede{
-	double consumicion;
-	int asientosPorFila;
-	String[] sectores;
-	int[] capacidad;
-	int[] porcentajeAdicional;
-	
-	public Miniestadio(String nombre, String direccion, int capacidadMaxima, double consumicion) {
-		super(nombre, direccion, capacidadMaxima);
-		this.consumicion = consumicion;
-	}
+	private double consumicion;
+	private int asientosPorFila;
+	private	int cantidadPuestos;
+	private String[] sectores;
+	private int[] capacidad;
+	private int[] porcentajeAdicional;
+		 public Miniestadio(String nombre, String direccion, int capacidadMaxima, double consumicion,
+             int asientosPorFila, int cantidadPuestos, String[] sectores, int[] capacidad, int[] porcentajeAdicional) {
+		 super(nombre, direccion, capacidadMaxima);
+		 if(asientosPorFila <= 0) {
+			 throw new RuntimeException("Los asientos por fila deben ser positivos");
+		 }
+		 this.consumicion = consumicion;
+		 this.asientosPorFila = asientosPorFila;
+		 this.cantidadPuestos = cantidadPuestos;
+		 this.sectores = sectores;
+		 this.capacidad = capacidad;
+		 this.porcentajeAdicional = porcentajeAdicional;
+	 }
 	
 
 
@@ -26,19 +35,23 @@ public class Miniestadio extends Sede{
 	@Override
 	
 	public int capacidadPorSector(String nombreSector) {
-		switch (nombreSector) {
-		case "Platea VIP":
-			return capacidad[0];
-		case "Platea Común":
-			return capacidad[1];
-		case "Platea Baja":
-			return capacidad[2];
-		case "Platea Alta":
-			return capacidad[3];
-		default:
-			return 0;
+		if(sectores == null || capacidad == null) {
+			throw new RuntimeException("Capacidad y/o sectores no se inicializaron correctamente");
+			}
+		if(sectores.length != capacidad.length) {
+			throw new RuntimeException("Los arreglos de sectores y capacidad no coinciden");
 		}
-	}
+		if (nombreSector == null) {
+			throw new RuntimeException("El nombre del sector es invalido");
+		}
+		
+		for (int i = 0; i<sectores.length; i++) {
+			if (nombreSector.equals(sectores[i])) {
+				return capacidad[i];
+			}
+		}
+		throw new RuntimeException("El sector ingresado no existe");
+		}
 	
 	public int devolverCapacidadTotal() {
 		int total = 0;

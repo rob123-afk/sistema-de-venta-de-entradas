@@ -2,15 +2,20 @@ package ticketek;
 
 public class Teatro extends Sede {
 	
-	int asientosPorFila;
-	String[] sectores;
-	int[] capacidad;
-	int[] porcentajeAdicional;
+	private int asientosPorFila;
+	private String[] sectores;
+	private int[] capacidad;
+	private int[] porcentajeAdicional;
 
 	public Teatro(String nombre, String direccion, int capacidadMaxima, int asientosPorFila,
 			String[] sectores, int[] capacidad, int[] porcentajeAdicional) {
 		super(nombre, direccion, capacidadMaxima);
-		
+		if(asientosPorFila <=0) {
+			throw new RuntimeException("Los asientos por fila deben ser positivos");
+		}
+		this.asientosPorFila = this.asientosPorFila;
+		this.capacidad = capacidad;
+		this.sectores = sectores;
 	}
 	
 	double calcularPrecio(double precioBase, String sector) {
@@ -30,18 +35,22 @@ public class Teatro extends Sede {
 	@Override
 	
 	public int capacidadPorSector(String nombreSector) {
-		switch (nombreSector) {
-		case "Platea VIP":
-			return capacidad[0];
-		case "Platea Común":
-			return capacidad[1];
-		case "Platea Baja":
-			return capacidad[2];
-		case "Platea Alta":
-			return capacidad[3];
-		default:
-			return 0;
+	if(sectores == null || capacidad == null) {
+		throw new RuntimeException("Capacidad y/o sectores no se inicializaron correctamente");
 		}
+	if(sectores.length != capacidad.length) {
+		throw new RuntimeException("Los arreglos de sectores y capacidad no coinciden");
+	}
+	if (nombreSector == null) {
+		throw new RuntimeException("El nombre del sector es invalido");
+	}
+	
+	for (int i = 0; i<sectores.length; i++) {
+		if (nombreSector.equals(sectores[i])) {
+			return capacidad[i];
+		}
+	}
+	throw new RuntimeException("El sector ingresado no existe");
 	}
 	
 	public int devolverCapacidadTotal() {

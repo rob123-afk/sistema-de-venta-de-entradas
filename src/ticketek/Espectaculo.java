@@ -45,7 +45,7 @@ public class Espectaculo {
 	
 	public String listarFunciones() {
 		if (funciones.isEmpty()) {
-			return "No hay funciones cargadas para este espectáculo.";		
+			throw new RuntimeException ("No hay funciones cargadas para este espectáculo.");		
 					}
 		StringBuilder funcionesListadas = new StringBuilder();
 		for (Funcion funcion : funciones.values()) {
@@ -55,9 +55,9 @@ public class Espectaculo {
 			if (sede instanceof Estadio) {
 				int vendidas = funcion.devolverEntradasVendidas().size();
 				int capacidad = ((Estadio) sede).devolverCapacidadTotal();
-				funcionesListadas.append(String.format("(%s) %s - %d/%d\n", fecha, sede.devolverNombre(), vendidas, capacidad));
+				funcionesListadas.append(String.format(" - (%s) %s - %d/%d\n", fecha, sede.devolverNombre(), vendidas, capacidad));
 			}else if (sede instanceof Teatro || sede instanceof Miniestadio) {
-				funcionesListadas.append(String.format("(%s) %s - ", fecha, sede.devolverNombre()));
+				funcionesListadas.append(" - (").append(fecha).append(") ").append(sede.devolverNombre()).append(" - ");
 				int vip = funcion.entradasVendidasPorSector("Platea VIP");
 				int comun = funcion.entradasVendidasPorSector("Platea Común");
 				int baja = funcion.entradasVendidasPorSector("Platea Baja");
@@ -68,7 +68,7 @@ public class Espectaculo {
 				int capacidadBaja = sede.capacidadPorSector("Platea Baja");
 				int capacidadAlta = sede.capacidadPorSector("Platea Alta");
 				
-				funcionesListadas.append(String.format("(%s) %s - Platea VIP: %d/%d | Platea Común: %d/%d | Platea Baja: %d/%d | Platea Alta: %d/%d\n"
+				funcionesListadas.append(String.format("VIP: %d/%d | Comun: %d/%d | Baja: %d/%d | Alta: %d/%d\n"
 						,fecha, sede, vip, capacidadVIP, comun,capacidadComun,baja, capacidadBaja, alta, capacidadAlta));
 				
 			}

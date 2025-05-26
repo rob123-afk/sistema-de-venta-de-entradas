@@ -71,7 +71,19 @@ public class Entrada implements IEntrada  {
 
 	}
 
+	public Entrada entradaConNuevaFechaEstadio(String nuevaFecha) {
+		return new Entrada(this.contraseña,this.codigo,this.nombreEspectaculo, nuevaFecha);
+	}
 	
+	public Entrada entradaConNuevaFechaTeatro(String nuevaFecha, String sector, int asiento) {
+		return new Entrada(this.contraseña,sector,this.codigo, this.nombreEspectaculo,nuevaFecha,asiento);
+	}
+	
+	public boolean esMismaEntrada (IEntrada otra) {
+		if (!(otra instanceof Entrada)) return false;
+		Entrada entradaBuscada = (Entrada) otra;
+		return this.codigo.equals(entradaBuscada.codigo);
+	}
 
 	
 }

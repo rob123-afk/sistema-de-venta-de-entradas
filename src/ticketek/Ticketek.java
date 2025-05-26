@@ -42,7 +42,7 @@ public class Ticketek implements ITicketek{
 			ListaDeSedes.put(nombre, new Teatro(nombre,direccion,capacidadMaxima,asientosPorFila,
 			sectores, capacidad, porcentajeAdicional));
 			} else {
-				System.out.println("teatro ya registrado");
+				throw new RuntimeException("teatro ya registrado");
 			}		
 	}*/
 	public void registrarSede(String nombre, String direccion, int capacidadMaxima, int asientosPorFila,
@@ -50,23 +50,23 @@ public class Ticketek implements ITicketek{
 	    
 	    // Validaciones de parámetros
 	    if (nombre == null || nombre.trim().isEmpty()) {
-	        throw new IllegalArgumentException("El nombre de la sede no puede ser nulo o vacío");
+	        throw new RuntimeException("El nombre de la sede no puede ser nulo o vacío");
 	    }
 	    
 	    if (ListaDeSedes.containsKey(nombre)) {
-	        throw new IllegalStateException("Teatro ya registrado: " + nombre);
+	        throw new RuntimeException("Teatro ya registrado: " + nombre);
 	    }
 	    
 	    if (direccion == null || direccion.trim().isEmpty()) {
-	        throw new IllegalArgumentException("La dirección no puede ser nula o vacía");
+	        throw new RuntimeException("La dirección no puede ser nula o vacía");
 	    }
 	    
 	    if (capacidadMaxima <= 0) {
-	        throw new IllegalArgumentException("La capacidad máxima debe ser mayor a 0");
+	        throw new RuntimeException("La capacidad máxima debe ser mayor a 0");
 	    }
 	    
 	    if (asientosPorFila <= 0) {
-	        throw new IllegalArgumentException("Los asientos por fila deben ser mayores a 0");
+	        throw new RuntimeException("Los asientos por fila deben ser mayores a 0");
 	    }
 	    
 	    validarArreglos(sectores, capacidad, porcentajeAdicional);
@@ -85,23 +85,23 @@ public class Ticketek implements ITicketek{
 
 	private void validarArreglos(String[] sectores, int[] capacidad, int[] porcentajeAdicional) {
 	    if (sectores == null || capacidad == null || porcentajeAdicional == null) {
-	        throw new IllegalArgumentException("Los arreglos de sectores no pueden ser nulos");
+	        throw new RuntimeException("Los arreglos de sectores no pueden ser nulos");
 	    }
 	    
 	    if (sectores.length == 0 || capacidad.length == 0 || porcentajeAdicional.length == 0) {
-	        throw new IllegalArgumentException("Los arreglos de sectores no pueden estar vacíos");
+	        throw new RuntimeException("Los arreglos de sectores no pueden estar vacíos");
 	    }
 	    
 	    if (sectores.length != capacidad.length || sectores.length != porcentajeAdicional.length) {
-	        throw new IllegalArgumentException("Los arreglos de sectores deben tener la misma longitud");
+	        throw new RuntimeException("Los arreglos de sectores deben tener la misma longitud");
 	    }
 	    
 	    for (int i = 0; i < capacidad.length; i++) {
 	        if (capacidad[i] <= 0) {
-	            throw new IllegalArgumentException("La capacidad del sector " + sectores[i] + " debe ser mayor a 0");
+	            throw new RuntimeException("La capacidad del sector " + sectores[i] + " debe ser mayor a 0");
 	        }
 	        if (porcentajeAdicional[i] < 0) {
-	            throw new IllegalArgumentException("El porcentaje adicional del sector " + sectores[i] + " no puede ser negativo");
+	            throw new RuntimeException("El porcentaje adicional del sector " + sectores[i] + " no puede ser negativo");
 	        }
 	    }
 	}
@@ -130,13 +130,21 @@ public class Ticketek implements ITicketek{
 			int cantidadPuestos, double precioConsumicion, String[] sectores, int[] capacidad,
 			int[] porcentajeAdicional) {	
 			
-			if(!ListaDeSedes.containsKey(nombre)) {
-				ListaDeSedes.put(nombre, new Miniestadio(nombre,direccion,capacidadMaxima,precioConsumicion));
-				} else {
-					System.out.println("miniestadio ya registrada");
-				}		
-		
-		
+			if(ListaDeSedes.containsKey(nombre)) {
+				throw new RuntimeException("miniestadio ya registrada");
+				} 					
+			 Miniestadio nuevoMiniestadio = new Miniestadio(
+				        nombre,
+				        direccion,
+				        capacidadMaxima,
+				        precioConsumicion,
+				        asientosPorFila,
+				        cantidadPuestos, 
+				        sectores,
+				        capacidad,
+				        porcentajeAdicional
+				    );
+			 ListaDeSedes.put(nombre, nuevoMiniestadio);
 	}
 			
 	 /**
@@ -153,14 +161,16 @@ public class Ticketek implements ITicketek{
 
 	public void registrarSede(String nombre, String direccion, int capacidadMaxima) {
 		
-		if(!ListaDeSedes.containsKey(nombre)) {
-			ListaDeSedes.put(direccion, new Estadio(nombre,direccion,capacidadMaxima));
-			} else {
-				System.out.println("Estadio ya registrada");
+		if(ListaDeSedes.containsKey(nombre)) {
+			throw new RuntimeException("Sede ya registrada");
+			}
+		
+			Estadio nuevoEstadio = new Estadio(nombre,direccion,capacidadMaxima);
+			ListaDeSedes.put(nombre, nuevoEstadio);	
 			}		
 		
 
-		}
+		
 
 	/**
      * 2) Registrar un nuevo usuario en el sistema
@@ -175,9 +185,9 @@ public class Ticketek implements ITicketek{
      */
 	public void registrarUsuario(String email, String nombre, String apellido, String contraseña) {
 		if(!ListaDeUsuarios.containsKey(email)) {
-		ListaDeUsuarios.put(email, new Usuario(nombre,apellido,contraseña));
+		ListaDeUsuarios.put(email, new Usuario(email,nombre,apellido,contraseña));
 		} else {
-			System.out.println("Email ya registrado");
+			throw new RuntimeException("Email ya registrado");
 		}
 		
 	}
@@ -199,12 +209,12 @@ public class Ticketek implements ITicketek{
 	public void registrarEspectaculo(String nombre) {
 	    // Validación de parámetros
 	    if (nombre == null || nombre.trim().isEmpty()) {
-	        throw new IllegalArgumentException("El nombre del espectáculo no puede ser nulo o vacío");
+	    	throw new RuntimeException("El nombre del espectáculo no puede ser nulo o vacío");
 	    }
 	    
 	    // Validación de estado
 	    if (ListaDeEspectaculos.containsKey(nombre)) {
-	        throw new IllegalStateException("El espectáculo '" + nombre + "' ya está registrado");
+	    	throw new RuntimeException("El espectáculo '" + nombre + "' ya está registrado");
 	    }
 	    
 	    // Registro del espectáculo
@@ -226,28 +236,28 @@ public class Ticketek implements ITicketek{
 	public void agregarFuncion(String nombreEspectaculo, String fecha, String sede, double precioBase) {
 	    // Validación de parámetros
 	    if (nombreEspectaculo == null || nombreEspectaculo.trim().isEmpty()) {
-	        throw new IllegalArgumentException("El nombre del espectáculo no puede ser nulo o vacío");
+	    	throw new RuntimeException("El nombre del espectáculo no puede ser nulo o vacío");
 	    }
 	    
 	    if (fecha == null || !fecha.matches("\\d{2}/\\d{2}/\\d{2}")) {
-	        throw new IllegalArgumentException("Formato de fecha inválido. Debe ser dd/mm/YY");
+	    	throw new RuntimeException("Formato de fecha inválido. Debe ser dd/mm/YY");
 	    }
 	    
 	    if (sede == null || sede.trim().isEmpty()) {
-	        throw new IllegalArgumentException("El nombre de la sede no puede ser nulo o vacío");
+	    	throw new RuntimeException("El nombre de la sede no puede ser nulo o vacío");
 	    }
 	    
 	    if (precioBase <= 0) {
-	        throw new IllegalArgumentException("El precio base debe ser mayor a cero");
+	    	throw new RuntimeException("El precio base debe ser mayor a cero");
 	    }
 	    
 	    // Validación de estado del sistema
 	    if (!ListaDeEspectaculos.containsKey(nombreEspectaculo)) {
-	        throw new IllegalStateException("El espectáculo '" + nombreEspectaculo + "' no está registrado");
+	    	throw new RuntimeException("El espectáculo '" + nombreEspectaculo + "' no está registrado");
 	    }
 	    
 	    if (!ListaDeSedes.containsKey(sede)) {
-	        throw new IllegalStateException("La sede '" + sede + "' no está registrada");
+	    	throw new RuntimeException("La sede '" + sede + "' no está registrada");
 	    }
 	    
 	    // Operación principal
@@ -255,7 +265,7 @@ public class Ticketek implements ITicketek{
 	        ListaDeEspectaculos.get(nombreEspectaculo)
 	            .agregarFuncion(fecha, ListaDeSedes.get(sede), precioBase);
 	    } catch (RuntimeException e) {
-	        throw new IllegalStateException("Error al agregar la función: " + e.getMessage(), e);
+	    	throw new RuntimeException("Error al agregar la función: " + e.getMessage(), e);
 	    }
 	}
 
@@ -279,20 +289,29 @@ public class Ticketek implements ITicketek{
      * @param cantidadEntradas
      * @return
      */
-	public List<IEntrada> venderEntrada(String nombreEspectaculo, String fecha, String email, String contraseña,
-			int cantidadEntradas) {
-		if(!ListaDeUsuarios.containsKey(email)) {System.out.println("email no registrado");
-		return null;}
-		if(!ListaDeEspectaculos.containsKey(nombreEspectaculo)) {System.out.println("espectaculo inexistente");
-		return null;}
-		if(!ListaDeUsuarios.get(email).comprobarContraseña(contraseña)) {System.out.println("contraseña incorrecta");
-		return null;}
+	public List<IEntrada> venderEntrada(String nombreEspectaculo, String fecha, String email, String contraseña,int cantidadEntradas){
+		if(email == null || contraseña == null || cantidadEntradas <= 0) {
+			throw new RuntimeException("Email no ingresado");
+			}
+		if(!ListaDeUsuarios.containsKey(email)) {
+			throw new RuntimeException("email no registrado");
+		}
+		if(!ListaDeEspectaculos.containsKey(nombreEspectaculo)) {
+			throw new RuntimeException("espectaculo inexistente");
+		}
+		Usuario usuario = ListaDeUsuarios.get(email);
+		if(!usuario.comprobarContraseña(contraseña)) {
+			throw new RuntimeException("Contraseña incorrecta");
+		}
 		
-		for(int i=0; i<cantidadEntradas; i++) {
-			
-		ListaDeUsuarios.get(email).comprarEntrada(contraseña, nombreEspectaculo, fecha);}
 		
-		return listarEntradasFuturas(email,contraseña);
+		List<IEntrada> entradasVendidas = new ArrayList<>();
+		
+		for(int i = 0; i < cantidadEntradas;i++) {
+			IEntrada nuevaEntrada = usuario.comprarEntrada(contraseña, nombreEspectaculo, fecha);
+			entradasVendidas.add(nuevaEntrada);
+			}
+		return entradasVendidas;
 		}
 		
 	/**
@@ -320,26 +339,41 @@ public class Ticketek implements ITicketek{
 	@Override
 	public List<IEntrada> venderEntrada(String nombreEspectaculo, String fecha, String email, String contraseña,
 			String sector, int[] asientos) {
-		if(!ListaDeUsuarios.containsKey(email)) {System.out.println("email no registrado");
-		return null;}
-		if(!ListaDeEspectaculos.containsKey(nombreEspectaculo)) {System.out.println("espectaculo inexistente");
-		return null;}
-		if(!ListaDeUsuarios.get(email).comprobarContraseña(contraseña)) {System.out.println("contraseña incorrecta");
-		return null;}
-		
-		
-		for(int asiento: asientos) {	
-		ListaDeUsuarios.get(email).comprarEntrada(contraseña,sector,nombreEspectaculo,fecha,asiento);
+		if(email == null || contraseña == null || sector == null || asientos == null) {
+			throw new RuntimeException("Los parametros son invalidos, revise el email, contraseña, sector y/o asientos");
+			}
+		if(!ListaDeUsuarios.containsKey(email)) {
+			throw new RuntimeException("email no registrado");
+			}
+		if(!ListaDeEspectaculos.containsKey(nombreEspectaculo)) {
+			throw new RuntimeException("espectaculo inexistente");
+			}
+		Usuario usuario = ListaDeUsuarios.get(email);
+		if(!usuario.comprobarContraseña(contraseña)) {
+			throw new RuntimeException("Contraseña incorrecta");
 		}
 		
-		return null;
+		List<IEntrada> entradasVendidas = new ArrayList<>();
+		
+		for(int asiento : asientos) {
+			try {
+				IEntrada nuevaEntrada = usuario.comprarEntrada(contraseña, sector, nombreEspectaculo,fecha,asiento);
+				entradasVendidas.add(nuevaEntrada);
+			} catch (RuntimeException e) {
+				System.out.println("Este asiento no está disponible");
+			}
+		}
+		if(entradasVendidas.isEmpty()) {
+			throw new RuntimeException("No se pudo comprar ningun asiento");
+		}
+		return entradasVendidas;
 	}
 
 	@Override
 	public String listarFunciones(String nombreEspectaculo) {
 		Espectaculo espectaculoSolicitado = ListaDeEspectaculos.get(nombreEspectaculo);
 		if (espectaculoSolicitado == null) {
-			return "Espectáculo no encontrado";
+			throw new RuntimeException ("Espectáculo no encontrado");
 		}
 		return espectaculoSolicitado.listarFunciones();
 	}
@@ -413,9 +447,14 @@ public class Ticketek implements ITicketek{
      * @param asiento
      * @return
      */
-	public Entrada cambiarEntrada(IEntrada entrada, String contrasenia, String fecha, String sector, int asiento) {
-		// TODO Auto-generated method stub
-		return null;
+	public IEntrada cambiarEntrada(IEntrada entrada, String contrasenia, String fecha, String sector, int asiento) {
+		Usuario usuarioBuscado = null;
+		for(Usuario usuario: ListaDeUsuarios.values()) {
+			if(usuario.comprobarContraseña(contrasenia)) {
+				usuarioBuscado = usuario;
+			}
+		}
+		return usuarioBuscado.cambiarEntradaTeatro(entrada,fecha,sector,asiento);
 	}
 
 	
@@ -437,8 +476,13 @@ public class Ticketek implements ITicketek{
      */
 	@Override
 	public IEntrada cambiarEntrada(IEntrada entrada, String contrasenia, String fecha) {
-		// TODO Auto-generated method stub
-		return null;
+		Usuario usuarioBuscado = null;
+		for(Usuario usuario: ListaDeUsuarios.values()) {
+			if(usuario.comprobarContraseña(contrasenia)) {
+				usuarioBuscado = usuario;
+			}
+		}
+		return usuarioBuscado.cambiarEntradaEstadio(entrada, fecha);
 	}
 
 	@Override
@@ -460,7 +504,8 @@ public class Ticketek implements ITicketek{
 	@Override
 	public double costoEntrada(String nombreEspectaculo, String fecha, String sector) {
 		if(!ListaDeEspectaculos.containsKey(nombreEspectaculo)) 
-		{System.out.println("espectaculo no registrado");
+		{
+			System.out.println("espectaculo no registrado");
 		Espectaculo espectaculo = ListaDeEspectaculos.get(nombreEspectaculo);
 		
 		Funcion funcion = espectaculo.devolverFunciones().get(fecha);
@@ -489,8 +534,7 @@ public class Ticketek implements ITicketek{
 		Espectaculo espectaculo = ListaDeEspectaculos.get(nombreEspectaculo);
 		
 		if (espectaculo == null) {
-			System.out.println("No se encontró el espectaculo");
-			return 0.0;
+			throw new RuntimeException("No se encontró el espectaculo");
 		}
 		double total = 0.0;
 		
@@ -507,8 +551,7 @@ public class Ticketek implements ITicketek{
 		Espectaculo espectaculo = ListaDeEspectaculos.get(nombreSede);
 		
 		if (espectaculo == null) {
-			System.out.println("No se encontró el espectáculo");
-			return 0.0;
+			throw new RuntimeException("No se encontró el espectáculo");
 		}
 		double total = 0.0;
 		
