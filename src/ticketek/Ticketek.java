@@ -35,7 +35,7 @@ public class Ticketek implements ITicketek{
      * @param porcentajeAdicional
      */
 	
-	public void registrarSede(String nombre, String direccion, int capacidadMaxima, int asientosPorFila,
+	/*public void registrarSede(String nombre, String direccion, int capacidadMaxima, int asientosPorFila,
 			String[] sectores, int[] capacidad, int[] porcentajeAdicional) {
 		
 		if(!ListaDeSedes.containsKey(nombre)) {
@@ -44,6 +44,66 @@ public class Ticketek implements ITicketek{
 			} else {
 				System.out.println("teatro ya registrado");
 			}		
+	}*/
+	public void registrarSede(String nombre, String direccion, int capacidadMaxima, int asientosPorFila,
+	        String[] sectores, int[] capacidad, int[] porcentajeAdicional) {
+	    
+	    // Validaciones de parámetros
+	    if (nombre == null || nombre.trim().isEmpty()) {
+	        throw new IllegalArgumentException("El nombre de la sede no puede ser nulo o vacío");
+	    }
+	    
+	    if (ListaDeSedes.containsKey(nombre)) {
+	        throw new IllegalStateException("Teatro ya registrado: " + nombre);
+	    }
+	    
+	    if (direccion == null || direccion.trim().isEmpty()) {
+	        throw new IllegalArgumentException("La dirección no puede ser nula o vacía");
+	    }
+	    
+	    if (capacidadMaxima <= 0) {
+	        throw new IllegalArgumentException("La capacidad máxima debe ser mayor a 0");
+	    }
+	    
+	    if (asientosPorFila <= 0) {
+	        throw new IllegalArgumentException("Los asientos por fila deben ser mayores a 0");
+	    }
+	    
+	    validarArreglos(sectores, capacidad, porcentajeAdicional);
+	    
+	    // Registro de la sede
+	    ListaDeSedes.put(nombre, new Teatro(
+	        nombre,
+	        direccion,
+	        capacidadMaxima,
+	        asientosPorFila,
+	        sectores,
+	        capacidad,
+	        porcentajeAdicional
+	    ));
+	}
+
+	private void validarArreglos(String[] sectores, int[] capacidad, int[] porcentajeAdicional) {
+	    if (sectores == null || capacidad == null || porcentajeAdicional == null) {
+	        throw new IllegalArgumentException("Los arreglos de sectores no pueden ser nulos");
+	    }
+	    
+	    if (sectores.length == 0 || capacidad.length == 0 || porcentajeAdicional.length == 0) {
+	        throw new IllegalArgumentException("Los arreglos de sectores no pueden estar vacíos");
+	    }
+	    
+	    if (sectores.length != capacidad.length || sectores.length != porcentajeAdicional.length) {
+	        throw new IllegalArgumentException("Los arreglos de sectores deben tener la misma longitud");
+	    }
+	    
+	    for (int i = 0; i < capacidad.length; i++) {
+	        if (capacidad[i] <= 0) {
+	            throw new IllegalArgumentException("La capacidad del sector " + sectores[i] + " debe ser mayor a 0");
+	        }
+	        if (porcentajeAdicional[i] < 0) {
+	            throw new IllegalArgumentException("El porcentaje adicional del sector " + sectores[i] + " no puede ser negativo");
+	        }
+	    }
 	}
 
     /**
@@ -127,15 +187,31 @@ public class Ticketek implements ITicketek{
     * @param fecha en formato: dd/mm/YY
     * @param sede
     * @param precioBase*/
-	public void registrarEspectaculo(String nombre) {
+	/*public void registrarEspectaculo(String nombre) {
 		if(!ListaDeEspectaculos.containsKey(nombre)) {
 			ListaDeEspectaculos.put(nombre, new Espectaculo(nombre));;
 			} else {
 				System.out.println("espectaculo ya registrado");
 			}
 				
+	}*/
+	
+	public void registrarEspectaculo(String nombre) {
+	    // Validación de parámetros
+	    if (nombre == null || nombre.trim().isEmpty()) {
+	        throw new IllegalArgumentException("El nombre del espectáculo no puede ser nulo o vacío");
+	    }
+	    
+	    // Validación de estado
+	    if (ListaDeEspectaculos.containsKey(nombre)) {
+	        throw new IllegalStateException("El espectáculo '" + nombre + "' ya está registrado");
+	    }
+	    
+	    // Registro del espectáculo
+	    ListaDeEspectaculos.put(nombre, new Espectaculo(nombre));
 	}
-
+	
+/*
 	public void agregarFuncion(String nombreEspectaculo, String fecha, String sede, double precioBase) {
 		
 		if(!ListaDeSedes.containsKey(sede)) {
@@ -145,19 +221,117 @@ public class Ticketek implements ITicketek{
 		
 		
 		ListaDeEspectaculos.get(nombreEspectaculo).agregarFuncion(fecha, ListaDeSedes.get(sede), precioBase);
+	}*/
+	
+	public void agregarFuncion(String nombreEspectaculo, String fecha, String sede, double precioBase) {
+	    // Validación de parámetros
+	    if (nombreEspectaculo == null || nombreEspectaculo.trim().isEmpty()) {
+	        throw new IllegalArgumentException("El nombre del espectáculo no puede ser nulo o vacío");
+	    }
+	    
+	    if (fecha == null || !fecha.matches("\\d{2}/\\d{2}/\\d{2}")) {
+	        throw new IllegalArgumentException("Formato de fecha inválido. Debe ser dd/mm/YY");
+	    }
+	    
+	    if (sede == null || sede.trim().isEmpty()) {
+	        throw new IllegalArgumentException("El nombre de la sede no puede ser nulo o vacío");
+	    }
+	    
+	    if (precioBase <= 0) {
+	        throw new IllegalArgumentException("El precio base debe ser mayor a cero");
+	    }
+	    
+	    // Validación de estado del sistema
+	    if (!ListaDeEspectaculos.containsKey(nombreEspectaculo)) {
+	        throw new IllegalStateException("El espectáculo '" + nombreEspectaculo + "' no está registrado");
+	    }
+	    
+	    if (!ListaDeSedes.containsKey(sede)) {
+	        throw new IllegalStateException("La sede '" + sede + "' no está registrada");
+	    }
+	    
+	    // Operación principal
+	    try {
+	        ListaDeEspectaculos.get(nombreEspectaculo)
+	            .agregarFuncion(fecha, ListaDeSedes.get(sede), precioBase);
+	    } catch (RuntimeException e) {
+	        throw new IllegalStateException("Error al agregar la función: " + e.getMessage(), e);
+	    }
 	}
 
-	@Override
-	public List<IEntrada> venderEntrada(String nombreEspectaculo, String fecha, String email, String contrasenia,
+	/**
+     * 4) Vende una o varias entradas a un usuario para funciones
+     * en sedes no numeradas
+     * 
+     * Devuelve una lista con las entradas vendidas (Ver interfaz IEntrada).
+     *  
+     * Se debe lanzar una excepcion si:
+     *  - Si la sede de la funcion está numerada
+     *  - si el usuario no está registrado
+     *  - si el espectaculo no está registrado
+     *  - si la contraseña no es valida
+     *  - etc...
+     * 
+     * @param nombreEspectaculo
+     * @param fecha en formato: dd/mm/YY
+     * @param email
+     * @param contrasenia
+     * @param cantidadEntradas
+     * @return
+     */
+	public List<IEntrada> venderEntrada(String nombreEspectaculo, String fecha, String email, String contraseña,
 			int cantidadEntradas) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		if(!ListaDeUsuarios.containsKey(email)) {System.out.println("email no registrado");
+		return null;}
+		if(!ListaDeEspectaculos.containsKey(nombreEspectaculo)) {System.out.println("espectaculo inexistente");
+		return null;}
+		if(!ListaDeUsuarios.get(email).comprobarContraseña(contraseña)) {System.out.println("contraseña incorrecta");
+		return null;}
+		
+		for(int i=0; i<cantidadEntradas; i++) {
+			
+		ListaDeUsuarios.get(email).comprarEntrada(contraseña, nombreEspectaculo, fecha);}
+		
+		return listarEntradasFuturas(email,contraseña);
+		}
+		
+	/**
+     * 4) Vende una o varias entradas a un usuario para funciones 
+     * con sedes numeradas.
+     * 
+     * Devuelve una lista con las entradas vendidas (Ver interfaz IEntrada).
+     * 
+     * Se debe lanzar una excepcion si:
+     *  - Si la sede de la funcion no es numerada
+     *  - si el usuario no está registrado
+     *  - si el espectaculo no está registrado
+     *  - si la contraseña no es valida
+     *  - etc...
+     *  
+     * @param nombreEspectaculo
+     * @param fecha en formato: dd/mm/YY
+     * @param email
+     * @param contrasenia
+     * @param sector
+     * @param asientos
+     * @return
+     */	
 
 	@Override
-	public List<IEntrada> venderEntrada(String nombreEspectaculo, String fecha, String email, String contrasenia,
+	public List<IEntrada> venderEntrada(String nombreEspectaculo, String fecha, String email, String contraseña,
 			String sector, int[] asientos) {
-		// TODO Auto-generated method stub
+		if(!ListaDeUsuarios.containsKey(email)) {System.out.println("email no registrado");
+		return null;}
+		if(!ListaDeEspectaculos.containsKey(nombreEspectaculo)) {System.out.println("espectaculo inexistente");
+		return null;}
+		if(!ListaDeUsuarios.get(email).comprobarContraseña(contraseña)) {System.out.println("contraseña incorrecta");
+		return null;}
+		
+		
+		for(int asiento: asientos) {	
+		ListaDeUsuarios.get(email).comprarEntrada(contraseña,sector,nombreEspectaculo,fecha,asiento);
+		}
+		
 		return null;
 	}
 
@@ -221,12 +395,46 @@ public class Ticketek implements ITicketek{
 		}
 	}
 
-	@Override
+	/**
+     * 9) Si puede asignar la entrada en la nueva fecha, anula la 
+     * entrada anterior.
+     * Devuelve una entrada nueva (Ver interfaz IEntrada).
+     * 
+     * Lanza excepcion si:
+     *  - Si la entrada original está en el pasado.
+     *  - Si la contraseña no es valida.
+     *  - etc...
+     * 
+     * 
+     * @param Entrada
+     * @param contrasenia
+     * @param fecha en formato: dd/mm/YY
+     * @param sector
+     * @param asiento
+     * @return
+     */
 	public Entrada cambiarEntrada(IEntrada entrada, String contrasenia, String fecha, String sector, int asiento) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	
+	/**
+     * 9) Si puede asignar la ebtrada en la nueva fecha, anula la 
+     * entrada anterior.
+     * Devuelve una entrada nueva (Ver interfaz IEntrada).
+     * 
+     * Lanza excepcion si:
+     *  - la entrada original está en el pasado
+     *  - Si la contraseña no es valida.
+     *  - etc...
+     *  
+     * 
+     * @param Entrada
+     * @param contrasenia
+     * @param fecha en formato: dd/mm/YY
+     * @return
+     */
 	@Override
 	public IEntrada cambiarEntrada(IEntrada entrada, String contrasenia, String fecha) {
 		// TODO Auto-generated method stub

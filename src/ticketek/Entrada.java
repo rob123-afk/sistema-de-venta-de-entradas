@@ -9,16 +9,26 @@ public class Entrada implements IEntrada  {
 	protected String codigo;
 	protected String nombreEspectaculo;
 	protected String fecha;
-	protected String ubicacion;
+	protected Integer asiento;
 
-	
-	public Entrada (String contraseña,String categoria,String codigo, String nombreEspectaculo,String fecha,String ubicacion) {
+	//constructor de entrada con categoria
+	public Entrada (String contraseña,String categoria,String codigo, String nombreEspectaculo,String fecha,int ubicacion) {
 		this.contraseña = contraseña;
 		this.categoria = categoria;
 		this.codigo = codigo;
 		this.nombreEspectaculo = nombreEspectaculo;
 		this.fecha = fecha;
-		this.ubicacion = ubicacion;
+		this.asiento = ubicacion;
+	}
+	
+	//constructor de campo
+	public Entrada (String contraseña,String codigo, String nombreEspectaculo,String fecha) {
+		this.contraseña = contraseña;
+		this.categoria = null;
+		this.codigo = codigo;
+		this.nombreEspectaculo = nombreEspectaculo;
+		this.fecha = fecha;
+		this.asiento = null;
 	}
 	
 	public double precio() {
@@ -34,7 +44,7 @@ public class Entrada implements IEntrada  {
 	@Override
 	public String toString() {
 		return "Entrada [contraseña=" + contraseña + ", categoria=" + categoria + ", codigo=" + codigo
-				+ ", nombreEspectaculo=" + nombreEspectaculo + ", fecha=" + fecha + ", ubicacion=" + ubicacion + "]";
+				+ ", nombreEspectaculo=" + nombreEspectaculo + ", fecha=" + fecha + ", ubicacion=" + asiento + "]";
 	}
 	
 	

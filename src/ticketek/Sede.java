@@ -1,5 +1,5 @@
 package ticketek;
-import java.util.*;
+
 public abstract class Sede {
 	
 	 int capacidad;	

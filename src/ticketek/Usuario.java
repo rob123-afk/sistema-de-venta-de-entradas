@@ -21,13 +21,19 @@ public class Usuario {
 		
 		this.contraseña=contraseña;
 	}
-	
-	
-	private void comprarEntrada(String contraseña,String categoria,String codigo, String nombreEspectaculo,String fecha,String sillas){
+	//comprar entrada sin sector
+		public void comprarEntrada(String contraseña, String nombreEspectaculo,String fecha){
+			
+			String codigo=generarCodigo();
+			Entrada entrada=new Entrada(contraseña,codigo,nombreEspectaculo,fecha);
+			entradasCompradas.put(codigo, entrada);
+			}
 		
-		Entrada entrada=new Entrada( contraseña, categoria, codigo,  nombreEspectaculo, fecha, sillas);
-		
-		entradasCompradas.put(generarCodigo(), entrada);
+	//comprar entrada con sector
+	public void comprarEntrada(String contraseña,String categoria, String nombreEspectaculo,String fecha,int silla){
+		String codigo=generarCodigo();
+		Entrada entrada=new Entrada(contraseña,categoria,codigo,nombreEspectaculo,fecha,silla);		
+		entradasCompradas.put(codigo, entrada);
 		}
 	
 	
@@ -35,15 +41,16 @@ public class Usuario {
 		Random random = new Random();
 		String codigo="";
 		
-		
-		while(entradasCompradas.containsKey(codigo)) {
+		do {
 			codigo="";
 			
 	        for (int i = 0; i < 5; i++) {
 	            // Genera una letra mayúscula aleatoria (A=65, Z=90 en ASCII)
 	            char letra = (char) (random.nextInt(26) + 'A');
 	            codigo=codigo+letra;
-	        }}
+	        }
+	    }while(entradasCompradas.containsKey(codigo));
+		
 			return codigo;
 	    }
 		
