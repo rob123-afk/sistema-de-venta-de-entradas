@@ -26,13 +26,13 @@ public class Usuario {
 		this.entradasCompradas = new HashMap<>();
 	}
 	//comprar entrada sin sector
-		public IEntrada comprarEntrada(String contraseña, String nombreEspectaculo,String fecha, double precio){
+		public IEntrada comprarEntrada(String contraseña, String nombreEspectaculo,String fecha, double precio, String nombreSede){
 			
 			if(!this.contraseña.equals(contraseña)) {
 				throw new RuntimeException("Contraseña incorrecta");
 				}
 			String codigo = generarCodigo();
-			Entrada entrada = new Entrada(contraseña,codigo, nombreEspectaculo, fecha, precio);
+			Entrada entrada = new Entrada(contraseña,codigo, nombreEspectaculo, fecha, precio,nombreSede);
 			
 			entradasCompradas.put(codigo, entrada);
 			
@@ -40,7 +40,8 @@ public class Usuario {
 			}
 		
 	//comprar entrada con sector
-	public IEntrada comprarEntrada(String contraseña,String categoria, String nombreEspectaculo,String fecha,int silla,double precio){
+	public IEntrada comprarEntrada(String contraseña,String categoria, String nombreEspectaculo,String fecha,int silla,double precio,
+			String nombreSede){
 		
 		if(!this.contraseña.equals(contraseña)) {
 			throw new RuntimeException("Contraseña incorreccta");
@@ -51,7 +52,7 @@ public class Usuario {
 		}
 		String codigo=generarCodigo();
 		
-		Entrada entrada=new Entrada(contraseña,categoria,codigo,nombreEspectaculo,fecha,silla,precio);
+		Entrada entrada=new Entrada(contraseña,categoria,codigo,nombreEspectaculo,fecha,silla,precio,nombreSede);
 		
 		entradasCompradas.put(codigo, entrada);
 		

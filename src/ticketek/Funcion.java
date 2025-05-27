@@ -1,5 +1,6 @@
 package ticketek;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Funcion {
@@ -51,6 +52,20 @@ public class Funcion {
     	entradasVendidas.add(entrada);
     }
     
+    public double calcularConsumicionMiniestadio(IEntrada entrada) {
+    	if(this.sede instanceof Miniestadio) {
+    		String sectorEntrada = entrada.ubicacion();
+    		  if(sectorEntrada.equals("VIP")) {
+    			  return 20000.0;
+    		  } else{
+    			  return 15000.0;
+    		  }
+    		
+    	}
+    	else {
+    		return 0.0;
+    	}
+    }
     
     public boolean venderEntrada(IEntrada entrada) {
     	if (entradasDisponibles.remove(entrada)) {
@@ -84,6 +99,5 @@ public class Funcion {
 public Sede devolverSede() {
 	return sede;
 }
-    
     
 }

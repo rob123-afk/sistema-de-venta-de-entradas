@@ -2,10 +2,10 @@ package ticketek;
 
 public abstract class Sede {
 	
-	 int capacidad;	
-	 public String direccion;	
-	 public String nombre;	
-	 int precioBase;
+	 protected int capacidad;	
+	 protected String direccion;	
+	 protected String nombre;	
+	 protected int precioBase;
 	 //private HashMap<String ,Espectaculo> ListaDeEspectaculos=new HashMap<>();
 	 
 	 

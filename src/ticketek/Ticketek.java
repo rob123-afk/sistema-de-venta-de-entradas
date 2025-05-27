@@ -311,11 +311,12 @@ public class Ticketek implements ITicketek{
 		}
 		
 		double precio = funcion.devolverPrecio();
+		String nombreSede = funcion.devolverSede().devolverNombre();
 		
 		List<IEntrada> entradasVendidas = new ArrayList<>();
 		
-		for(int i = 0; i < cantidadEntradas;i++) {
-			IEntrada nuevaEntrada = usuario.comprarEntrada(contraseña, nombreEspectaculo, fecha,precio);
+			for(int i = 0; i < cantidadEntradas;i++) {
+			IEntrada nuevaEntrada = usuario.comprarEntrada(contraseña, nombreEspectaculo, fecha,precio,nombreSede);
 			funcion.agregarEntradaVendida(nuevaEntrada);
 			entradasVendidas.add(nuevaEntrada);
 			}
@@ -370,10 +371,10 @@ public class Ticketek implements ITicketek{
 		}
 		
 		List<IEntrada> entradasVendidas = new ArrayList<>();
-		
-		for(int asiento : asientos) {
+		String nombreSede = funcion.devolverSede().devolverNombre();
+				for(int asiento : asientos) {
 			try {
-				IEntrada nuevaEntrada = usuario.comprarEntrada(contraseña, sector, nombreEspectaculo,fecha,asiento,precio);
+				IEntrada nuevaEntrada = usuario.comprarEntrada(contraseña, sector, nombreEspectaculo,fecha,asiento,precio,nombreSede);
 				funcion.agregarEntradaVendida(nuevaEntrada);
 				entradasVendidas.add(nuevaEntrada);
 				
@@ -479,7 +480,26 @@ public class Ticketek implements ITicketek{
      * @return
      */
 	public IEntrada cambiarEntrada(IEntrada entrada, String contrasenia, String fecha, String sector, int asiento) {
-	return null;
+		if (contrasenia == null) {
+			throw new RuntimeException("Contraseña invalida");
+		}
+		if (entrada == null) {
+			throw new RuntimeException("Entrada invalida");
+		}
+		boolean usuarioEncontrado = false;
+		for(Usuario usuario : ListaDeUsuarios.values()) {
+			if(usuario.comprobarContraseña(contrasenia)) {
+				usuarioEncontrado = true;
+			if(usuario.devolverEntradasCompradas().contains(entrada)) {
+				return usuario.cambiarEntradaTeatro(entrada, fecha,sector,asiento);
+				}
+			}
+		}
+		if (usuarioEncontrado) {
+			throw new RuntimeException("La entrada no existe para este usuario");
+		} else {
+			throw new RuntimeException("Contraseña incorrecta");
+		}
 	}
 
 	
@@ -501,7 +521,26 @@ public class Ticketek implements ITicketek{
      */
 	@Override
 	public IEntrada cambiarEntrada(IEntrada entrada, String contrasenia, String fecha) {
-		return null;
+		if (contrasenia == null) {
+			throw new RuntimeException("Contraseña invalida");
+		}
+		if (entrada == null) {
+			throw new RuntimeException("Entrada invalida");
+		}
+		boolean usuarioEncontrado = false;
+		for(Usuario usuario : ListaDeUsuarios.values()) {
+			if(usuario.comprobarContraseña(contrasenia)) {
+				usuarioEncontrado = true;
+			if(usuario.devolverEntradasCompradas().contains(entrada)) {
+				return usuario.cambiarEntradaEstadio(entrada, fecha);
+				}
+			}
+		}
+		if (usuarioEncontrado) {
+			throw new RuntimeException("La entrada no existe para este usuario");
+		} else {
+			throw new RuntimeException("Contraseña incorrecta");
+		}
 	}
 
 	@Override
@@ -540,38 +579,27 @@ public class Ticketek implements ITicketek{
 
 	@Override
 	public double totalRecaudado(String nombreEspectaculo) {
-		 // Verificar que el espectáculo existe
 	    Espectaculo espectaculo = ListaDeEspectaculos.get(nombreEspectaculo);
 	    if (espectaculo == null) {
 	        throw new RuntimeException("No se encontró el espectáculo");
-	    }
-	    
+	    }	    
 	    double total = 0.0;
-	    HashMap<String, Funcion> funciones = espectaculo.devolverFunciones();
-	    
-	    // Verificar que hay funciones
+	    HashMap<String, Funcion> funciones = espectaculo.devolverFunciones();	 
 	    if (funciones.isEmpty()) {
-	        throw new RuntimeException("El espectáculo no tiene funciones registradas");
-	    }
-	    
+	        throw new RuntimeException("El espectáculo " + nombreEspectaculo + "no tiene funciones registradas");
+	    }    
 	    for (Funcion funcion : funciones.values()) {
-	        List<IEntrada> entradas = funcion.devolverEntradasVendidas();
-	        
-	        // Verificar que hay entradas vendidas
-	        if (entradas.isEmpty()) {
-	            System.out.println("Advertencia: Función sin entradas vendidas");
-	            continue;
-	        }
-	        
-	        for (IEntrada entrada : entradas) {
-	            double precio = entrada.precio();
-	            if (precio <= 0) {
-	                System.out.println("Advertencia: Entrada con precio 0 o negativo");
-	            }
-	            total += precio;
-	        }
+	    	List<IEntrada> entradasVendidas = funcion.devolverEntradasVendidas();
+	    	if (entradasVendidas != null && !entradasVendidas.isEmpty()) {
+	    		for(IEntrada entrada : entradasVendidas) {
+	    			if (entrada != null) {
+	    				double precioEntrada = funcion.calcularConsumicionMiniestadio(entrada) + entrada.precio();
+	    				total += precioEntrada;
+	    			}
+	    		}
+	    	}
 	    }
-		return total;
+	    return total;
 	}
 
 	@Override
@@ -581,12 +609,19 @@ public class Ticketek implements ITicketek{
 			throw new RuntimeException("No se encontró el espectáculo");
 		}
 		double total = 0.0;
-		
-		for(Funcion funcion : espectaculo.devolverFunciones().values()) {
-			if (funcion.devolverSede() != null && nombreSede.equals((funcion).devolverSede().devolverNombre())) {
-				for (IEntrada entrada : funcion.devolverEntradasVendidas()){
-					if(entrada != null) {
-					total += entrada.precio();
+		HashMap<String, Funcion> funciones = espectaculo.devolverFunciones();
+		if(funciones.isEmpty()) {
+			throw new RuntimeException("El espectaculo " + nombreEspectaculo + "no tiene funciones registradas");
+		}
+		for(Funcion funcion : funciones.values()) {
+			if(funcion.devolverSede().devolverNombre().equals(nombreSede)){
+				List<IEntrada> entradasVendidas = funcion.devolverEntradasVendidas();
+				if(entradasVendidas != null && !entradasVendidas.isEmpty()) {
+					for(IEntrada entrada : entradasVendidas) {
+						if(entrada !=null) {
+							double precioEntrada = funcion.calcularConsumicionMiniestadio(entrada) + entrada.precio();
+							total += precioEntrada;
+						}
 					}
 				}
 			}

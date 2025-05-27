@@ -18,8 +18,8 @@ public class Miniestadio extends Sede{
 		 this.consumicion = consumicion;
 		 this.asientosPorFila = asientosPorFila;
 		 this.cantidadPuestos = cantidadPuestos;
-		 this.sectores = Arrays.copyOf(sectores, sectores.length);;
-		 this.capacidad = Arrays.copyOf(capacidad, capacidad.length);
+		 this.sectores = sectores;
+		 this.capacidad = capacidad;
 		 this.porcentajeAdicional = porcentajeAdicional;
 	 }
 	
@@ -61,5 +61,21 @@ public class Miniestadio extends Sede{
 			total += capacida;
 		}
 		return total;
+	}
+
+
+
+
+
+
+
+
+
+	public String[] tomarSectores() {
+		return this.sectores;
+	}
+	
+	public int[] tomarConsumiciones() {
+		return this.porcentajeAdicional;
 	}
 }

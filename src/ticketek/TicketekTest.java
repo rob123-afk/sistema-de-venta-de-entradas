@@ -222,6 +222,7 @@ public class TicketekTest{
     public void ej09_cambiarEntrada() {
         IEntrada nuevaEntrada = ticketek.cambiarEntrada(entradasJavierColdplay.get(0), "1234", "25/07/25");
         assertNotNull(nuevaEntrada);
+        System.out.println(nuevaEntrada.toString());
         String strEntrada = nuevaEntrada.toString();
         // Tambien se valida el formato del string esperado de las entradas.
         assertTrue(strEntrada.contains("- Coldplay en vivo - 25/07/25 - La bombonera - CAMPO"));
