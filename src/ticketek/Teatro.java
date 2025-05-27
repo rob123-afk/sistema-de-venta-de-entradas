@@ -19,13 +19,13 @@ public class Teatro extends Sede {
 	}
 	
 	double calcularPrecio(double precioBase, String sector) {
-    	if (sector.equals("Vip")) {
+    	if (sector.equals("Platea VIP")) {
     		return precioBase * (porcentajeAdicional[0]/100)+precioBase;
     	}
-    	if (sector.equals("común")) {
+    	if (sector.equals("Platea Común")) {
     		return precioBase * (porcentajeAdicional[1]/100)+precioBase;
     	}
-    	if (sector.equals("baja")) {
+    	if (sector.equals("Platea Baja")) {
     		return precioBase * (porcentajeAdicional[2]/100)+precioBase;
     	}
     	

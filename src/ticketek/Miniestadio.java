@@ -1,5 +1,7 @@
 package ticketek;
 
+import java.util.Arrays;
+
 public class Miniestadio extends Sede{
 	private double consumicion;
 	private int asientosPorFila;
@@ -16,8 +18,8 @@ public class Miniestadio extends Sede{
 		 this.consumicion = consumicion;
 		 this.asientosPorFila = asientosPorFila;
 		 this.cantidadPuestos = cantidadPuestos;
-		 this.sectores = sectores;
-		 this.capacidad = capacidad;
+		 this.sectores = Arrays.copyOf(sectores, sectores.length);;
+		 this.capacidad = Arrays.copyOf(capacidad, capacidad.length);
 		 this.porcentajeAdicional = porcentajeAdicional;
 	 }
 	
@@ -45,11 +47,11 @@ public class Miniestadio extends Sede{
 			throw new RuntimeException("El nombre del sector es invalido");
 		}
 		
-		for (int i = 0; i<sectores.length; i++) {
-			if (nombreSector.equals(sectores[i])) {
-				return capacidad[i];
-			}
-		}
+		   for (int i = 0; i < sectores.length; i++) {
+		        if (nombreSector.equals(sectores[i])) {
+		            return capacidad[i];
+		        }
+		    }
 		throw new RuntimeException("El sector ingresado no existe");
 		}
 	

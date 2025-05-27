@@ -24,12 +24,11 @@ public class Funcion {
     }
     
     public double devolverPrecio() {
-    	
     	return precioBase;
     }
     
     public double devolverPrecioPlateaBaja() {
-    	return precioBase * 1.40;
+    	return precioBase * 1.50;
     }
     
     public double devolverPrecioVIP() {
@@ -46,6 +45,10 @@ public class Funcion {
     
     public void agregarEntradaDisponible(IEntrada entrada) {
     	entradasDisponibles.add(entrada);
+    }
+    
+    public void agregarEntradaVendida(IEntrada entrada) {
+    	entradasVendidas.add(entrada);
     }
     
     
@@ -66,9 +69,13 @@ public class Funcion {
     
    public int entradasVendidasPorSector(String nombreSector) {
 	   int contador = 0;
-	   for (IEntrada entrada :entradasVendidas) {
-		   if(entrada.equals(nombreSector)) {
-			   contador ++;
+	   for (IEntrada entrada : entradasVendidas) {
+		   if (entrada instanceof Entrada entradaConcreta) {
+			   String sector = entradaConcreta.ubicacion();
+			   System.out.println(sector + nombreSector);
+			   if (sector != null && nombreSector.equalsIgnoreCase(sector)) {
+				   contador++;
+			   }
 		   }
 	   }
 	   return contador;

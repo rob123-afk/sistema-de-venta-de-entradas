@@ -26,14 +26,13 @@ public class Usuario {
 		this.entradasCompradas = new HashMap<>();
 	}
 	//comprar entrada sin sector
-		public IEntrada comprarEntrada(String contraseña, String nombreEspectaculo,String fecha){
+		public IEntrada comprarEntrada(String contraseña, String nombreEspectaculo,String fecha, double precio){
 			
 			if(!this.contraseña.equals(contraseña)) {
 				throw new RuntimeException("Contraseña incorrecta");
 				}
 			String codigo = generarCodigo();
-			
-			Entrada entrada = new Entrada(contraseña,codigo,nombreEspectaculo,fecha);
+			Entrada entrada = new Entrada(contraseña,codigo, nombreEspectaculo, fecha, precio);
 			
 			entradasCompradas.put(codigo, entrada);
 			
@@ -41,7 +40,7 @@ public class Usuario {
 			}
 		
 	//comprar entrada con sector
-	public IEntrada comprarEntrada(String contraseña,String categoria, String nombreEspectaculo,String fecha,int silla){
+	public IEntrada comprarEntrada(String contraseña,String categoria, String nombreEspectaculo,String fecha,int silla,double precio){
 		
 		if(!this.contraseña.equals(contraseña)) {
 			throw new RuntimeException("Contraseña incorreccta");
@@ -52,7 +51,7 @@ public class Usuario {
 		}
 		String codigo=generarCodigo();
 		
-		Entrada entrada=new Entrada(contraseña,categoria,codigo,nombreEspectaculo,fecha,silla);
+		Entrada entrada=new Entrada(contraseña,categoria,codigo,nombreEspectaculo,fecha,silla,precio);
 		
 		entradasCompradas.put(codigo, entrada);
 		
@@ -98,11 +97,13 @@ public class Usuario {
 	}
 	
 	public boolean anularEntrada(String codigo) {
-		if(!entradasCompradas.containsKey(codigo)) {System.out.println("codigo no existente");
-		return false;}
-		else{ entradasCompradas.remove(codigo);
-		return true;}
-		
+		if(!entradasCompradas.containsKey(codigo)) {
+			throw new RuntimeException("codigo no existente");
+
+		}
+		else{ 
+			entradasCompradas.remove(codigo);
+		return true;}				
 	}
 	
 	public IEntrada cambiarEntradaEstadio(IEntrada entradaVieja, String nuevaFecha) {
@@ -113,11 +114,11 @@ public class Usuario {
 	}
 	
 	public IEntrada cambiarEntradaTeatro(IEntrada entradaVieja, String nuevaFecha,String sector, int asiento) {
-		Entrada entradaNueva = ((Entrada) entradaVieja).entradaConNuevaFechaTeatro(nuevaFecha,sector,asiento);
-		entradasCompradas.put(((Entrada)entradaNueva).obtenerCodigo(), entradaNueva);
-		anularEntrada(entradaVieja.obtenerCodigo());
-		return entradaNueva;
-	}
+		 Entrada entradaNueva = ((Entrada) entradaVieja).entradaConNuevaFechaTeatro(nuevaFecha, sector, asiento);
+		    entradasCompradas.put(entradaNueva.obtenerCodigo(), entradaNueva);
+		    anularEntrada(entradaVieja.obtenerCodigo());
+		    return entradaNueva;
+		}
 	
 	
 //	public List<IEntrada> entradasCompradasPorUsuario(String email, String contraseña){
