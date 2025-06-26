@@ -44,13 +44,13 @@ public class Teatro extends Sede {
 	if (nombreSector == null) {
 		throw new RuntimeException("El nombre del sector es invalido");
 	}
-	
-	for (int i = 0; i<sectores.length; i++) {
+	int capacidadBuscada = 0;
+	for (int i = 0; i<sectores.length-1; i++) {
 		if (nombreSector.equals(sectores[i])) {
-			return capacidad[i];
+			capacidadBuscada = capacidad[i];
+			}
 		}
-	}
-	throw new RuntimeException("El sector ingresado no existe");
+	return capacidadBuscada;
 	}
 	
 	public int devolverCapacidadTotal() {

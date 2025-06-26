@@ -120,6 +120,10 @@ public class Usuario {
 		    anularEntrada(entradaVieja.obtenerCodigo());
 		    return entradaNueva;
 		}
+	@Override
+	public String toString() {
+		return "Usuario [nombre=" + nombre + "]";
+	}
 	
 	
 //	public List<IEntrada> entradasCompradasPorUsuario(String email, String contraseña){

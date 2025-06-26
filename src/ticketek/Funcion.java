@@ -87,9 +87,9 @@ public class Funcion {
 	   for (IEntrada entrada : entradasVendidas) {
 		   if (entrada instanceof Entrada entradaConcreta) {
 			   String sector = entradaConcreta.ubicacion();
-			   System.out.println(sector + nombreSector);
 			   if (sector != null && nombreSector.equalsIgnoreCase(sector)) {
 				   contador++;
+				   System.out.println(contador);
 			   }
 		   }
 	   }

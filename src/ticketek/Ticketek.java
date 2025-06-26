@@ -564,13 +564,13 @@ public class Ticketek implements ITicketek{
 			throw new RuntimeException("En esa fecha no está registrado el espectaculo");
 		}
 		switch(sector){
-		case "Baja":
+		case "Platea Baja":
             return funcion.devolverPrecioPlateaBaja();
-        case "Alta":
+        case "Platea Alta":
             return funcion.devolverPrecio();
-        case "VIP":
+        case "Platea VIP":
             return funcion.devolverPrecioVIP();
-        case "Comun":
+        case "Platea Común":
             return funcion.devolverPrecioPlateaComun();
         default:
             throw new RuntimeException("Sector no válido: " + sector);

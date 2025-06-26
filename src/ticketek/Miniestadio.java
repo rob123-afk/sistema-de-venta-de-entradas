@@ -46,13 +46,13 @@ public class Miniestadio extends Sede{
 		if (nombreSector == null) {
 			throw new RuntimeException("El nombre del sector es invalido");
 		}
-		
+		int capacidadBuscada = 0;
 		   for (int i = 0; i < sectores.length; i++) {
 		        if (nombreSector.equals(sectores[i])) {
-		            return capacidad[i];
+		             capacidadBuscada = capacidad[i];
 		        }
 		    }
-		throw new RuntimeException("El sector ingresado no existe");
+		return capacidadBuscada;
 		}
 	
 	public int devolverCapacidadTotal() {

@@ -65,7 +65,7 @@ public class Entrada implements IEntrada  {
 	
 	public String toString() {
 		String fechaFormateada = formatearFechaConPasado(fecha);
-		return String.format("- "+ codigo + " - " + nombreEspectaculo + " - "+ fechaFormateada +" - " + nombreSede +" - "+ categoria.toUpperCase());
+		return String.format(" - " + nombreEspectaculo + " - "+ fechaFormateada +" - " + nombreSede +" - "+ categoria.toUpperCase());
 	}
 	
 	
