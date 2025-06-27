@@ -563,18 +563,7 @@ public class Ticketek implements ITicketek{
 		if(funcion == null) {
 			throw new RuntimeException("En esa fecha no está registrado el espectaculo");
 		}
-		switch(sector){
-		case "Platea Baja":
-            return funcion.devolverPrecioPlateaBaja();
-        case "Platea Alta":
-            return funcion.devolverPrecio();
-        case "Platea VIP":
-            return funcion.devolverPrecioVIP();
-        case "Platea Común":
-            return funcion.devolverPrecioPlateaComun();
-        default:
-            throw new RuntimeException("Sector no válido: " + sector);
-			}
+		return funcion.devolverPrecioSector(sector);
 		}	
 
 	@Override

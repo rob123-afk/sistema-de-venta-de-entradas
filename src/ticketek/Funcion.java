@@ -40,6 +40,21 @@ public class Funcion {
     	return precioBase * 1.40;
     }
     
+    public double devolverPrecioSector(String sector) {
+    	double costoEntrada = 0;
+		switch(sector){
+		case "Baja":
+			costoEntrada = precioBase * 1.50;
+        case "Alta":
+        	costoEntrada = precioBase;
+        case "VIP":
+        	costoEntrada = precioBase * 1.70;
+        case "Comun":
+        	costoEntrada = precioBase * 1.40;
+			}
+		return costoEntrada;
+    }
+    
     public String toString() {
     	return "Sede: " + sede + ", Fecha: " + fecha + ", Precio base: $" + precioBase;
     }
