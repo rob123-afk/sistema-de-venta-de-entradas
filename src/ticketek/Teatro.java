@@ -13,7 +13,7 @@ public class Teatro extends Sede {
 		if(asientosPorFila <=0) {
 			throw new RuntimeException("Los asientos por fila deben ser positivos");
 		}
-		this.asientosPorFila = this.asientosPorFila;
+		this.asientosPorFila = asientosPorFila;
 		this.capacidad = capacidad;
 		this.sectores = sectores;
 	}

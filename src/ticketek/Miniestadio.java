@@ -66,7 +66,19 @@ public class Miniestadio extends Sede{
 
 
 
-
+	double calcularPrecio(double precioBase, String sector) {
+    	if (sector.equals("Platea VIP")) {
+    		return precioBase * (porcentajeAdicional[0]/100)+precioBase;
+    	}
+    	if (sector.equals("Platea Común")) {
+    		return precioBase * (porcentajeAdicional[1]/100)+precioBase;
+    	}
+    	if (sector.equals("Platea Baja")) {
+    		return precioBase * (porcentajeAdicional[2]/100)+precioBase;
+    	}
+    	
+    	return precioBase;    
+    }
 
 
 
