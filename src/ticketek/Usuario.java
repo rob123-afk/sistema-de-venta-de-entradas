@@ -14,7 +14,18 @@ public class Usuario {
 	private HashMap<String, Entrada> entradasCompradas;//key del HashMap
 	
 	public Usuario(String email,String nombre, String apellido, String contraseña){
-		
+		if(email == null || email.isEmpty()) {
+			throw new RuntimeException("Por favor ingrese un mail para el usuario");
+		}
+		if(nombre == null || nombre.isEmpty()) {
+			throw new RuntimeException("Por favor ingrese un nombre para el usuario");
+		}
+		if(apellido == null || apellido.isEmpty()) {
+			throw new RuntimeException("Por favor ingrese un apellido para el usuario");
+		}
+		if(email == contraseña || contraseña.isEmpty()) {
+			throw new RuntimeException("Por favor ingrese una contraseña para el usuario");
+		}
 		this.nombre=nombre;
 		
 		this.apellido=apellido;
@@ -125,6 +136,9 @@ public class Usuario {
 		return "Usuario [nombre=" + nombre + "]";
 	}
 	
+	public String obtenerEmail() {
+		return email;
+	}
 	
 //	public List<IEntrada> entradasCompradasPorUsuario(String email, String contraseña){
 //		if (ListaDeUsuarios.containsKey(email)) {

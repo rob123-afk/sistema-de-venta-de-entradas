@@ -11,6 +11,7 @@ public class Ticketek implements ITicketek{
 	private HashMap<String ,Usuario> ListaDeUsuarios=new HashMap<>();
 	private HashMap<String ,Espectaculo> ListaDeEspectaculos=new HashMap<>(); //key nombre
 	private HashMap<String ,Sede> ListaDeSedes=new HashMap<>(); //key nombre
+	private HashMap<String, String> codigoEntradayMail = new HashMap<>(); //key mail del usuario
 
 	
 	public static void main(String[] args) {
@@ -35,16 +36,6 @@ public class Ticketek implements ITicketek{
      * @param porcentajeAdicional
      */
 	
-	/*public void registrarSede(String nombre, String direccion, int capacidadMaxima, int asientosPorFila,
-			String[] sectores, int[] capacidad, int[] porcentajeAdicional) {
-		
-		if(!ListaDeSedes.containsKey(nombre)) {
-			ListaDeSedes.put(nombre, new Teatro(nombre,direccion,capacidadMaxima,asientosPorFila,
-			sectores, capacidad, porcentajeAdicional));
-			} else {
-				throw new RuntimeException("teatro ya registrado");
-			}		
-	}*/
 	public void registrarSede(String nombre, String direccion, int capacidadMaxima, int asientosPorFila,
 	        String[] sectores, int[] capacidad, int[] porcentajeAdicional) {
 	    
@@ -319,7 +310,9 @@ public class Ticketek implements ITicketek{
 			IEntrada nuevaEntrada = usuario.comprarEntrada(contraseña, nombreEspectaculo, fecha,precio,nombreSede);
 			funcion.agregarEntradaVendida(nuevaEntrada);
 			entradasVendidas.add(nuevaEntrada);
+			codigoEntradayMail.put(nuevaEntrada.obtenerCodigo(), usuario.obtenerEmail());
 			}
+		funcion.eliminarEntradasVendidasDeDisponibles();
 		return entradasVendidas;
 		}
 		
@@ -376,6 +369,7 @@ public class Ticketek implements ITicketek{
 			try {
 				IEntrada nuevaEntrada = usuario.comprarEntrada(contraseña, sector, nombreEspectaculo,fecha,asiento,precio,nombreSede);
 				funcion.agregarEntradaVendida(nuevaEntrada);
+				codigoEntradayMail.put(nuevaEntrada.obtenerCodigo(), usuario.obtenerEmail());
 				entradasVendidas.add(nuevaEntrada);
 				
 			} catch (RuntimeException e) {
@@ -443,22 +437,20 @@ public class Ticketek implements ITicketek{
 		if(entrada == null) {
 			throw new RuntimeException("Entrada invalida");
 		}
-		boolean usuarioEncontrado = false;
-		for(Usuario usuario : ListaDeUsuarios.values()) {
-			if(usuario.comprobarContraseña(contraseña)) {
-				 usuarioEncontrado = true;
-			if(usuario.devolverEntradasCompradas().contains(entrada)) {
-				usuario.anularEntrada(entrada.obtenerCodigo());
-				return true;
-				}
-			} 
+		
+		String codigo = entrada.obtenerCodigo();
+		String emailUsuario = codigoEntradayMail.get(codigo);
+		
+		if(emailUsuario == null) {
+			throw new RuntimeException("No se encontró un usuario con esa entrada");
 		}
-		if (usuarioEncontrado){
-			throw new RuntimeException("La entrada no existe para este usuario");
-		} else {
-			throw new RuntimeException("Contraseña incorrecta");
+		Usuario usuario = ListaDeUsuarios.get(emailUsuario);
+		if(usuario == null || !usuario.comprobarContraseña(contraseña)) {
+			throw new RuntimeException("La contraseña no corresponde con el usuario");
 		}
-
+		usuario.anularEntrada(codigo);
+		codigoEntradayMail.remove(codigo);
+		return true;
 	}
 
 	/**
@@ -578,15 +570,7 @@ public class Ticketek implements ITicketek{
 	        throw new RuntimeException("El espectáculo " + nombreEspectaculo + "no tiene funciones registradas");
 	    }    
 	    for (Funcion funcion : funciones.values()) {
-	    	List<IEntrada> entradasVendidas = funcion.devolverEntradasVendidas();
-	    	if (entradasVendidas != null && !entradasVendidas.isEmpty()) {
-	    		for(IEntrada entrada : entradasVendidas) {
-	    			if (entrada != null) {
-	    				double precioEntrada = funcion.calcularConsumicionMiniestadio(entrada) + entrada.precio();
-	    				total += precioEntrada;
-	    			}
-	    		}
-	    	}
+	    	total += funcion.costoTotalDeLasEntradasVendidasPorEspectaculo(funcion);
 	    }
 	    return total;
 	}
@@ -603,21 +587,10 @@ public class Ticketek implements ITicketek{
 			throw new RuntimeException("El espectaculo " + nombreEspectaculo + "no tiene funciones registradas");
 		}
 		for(Funcion funcion : funciones.values()) {
-			if(funcion.devolverSede().devolverNombre().equals(nombreSede)){
-				List<IEntrada> entradasVendidas = funcion.devolverEntradasVendidas();
-				if(entradasVendidas != null && !entradasVendidas.isEmpty()) {
-					for(IEntrada entrada : entradasVendidas) {
-						if(entrada !=null) {
-							double precioEntrada = funcion.calcularConsumicionMiniestadio(entrada) + entrada.precio();
-							total += precioEntrada;
-						}
-					}
-				}
-			}
+			total += funcion.costoTotalDeLasEntradasVendidasPorSede(funcion,nombreSede);
 		}
 		return total;
 	}
-
 	
 
 

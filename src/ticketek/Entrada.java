@@ -16,6 +16,30 @@ public class Entrada implements IEntrada  {
 	//constructor de entrada con categoria
 	public Entrada (String contraseña,String categoria,String codigo, String nombreEspectaculo,String fecha,int ubicacion, double precio,
 			String nombreSede) {
+		if(contraseña == null || contraseña.isEmpty()) {
+			throw new RuntimeException("Por favor ingresar una contraseña para la entrada");
+		}
+		if(categoria == null || categoria.isEmpty()) {
+			throw new RuntimeException("Por favor ingresar una categoria para la entrada");
+		}
+		if(codigo == null || codigo.isEmpty()) {
+			throw new RuntimeException("Error al generar el codigo de la entrada");
+		}
+		if(nombreEspectaculo == null || nombreEspectaculo.isEmpty()) {
+			throw new RuntimeException("Por favor ingresar de que espectaculo es la entrada");
+		}
+		if(fecha == null || fecha.isEmpty()) {
+			throw new RuntimeException("Por favor ingresar una fecha para la entrada");
+		}
+		if(ubicacion < 0) {
+			throw new RuntimeException("Por favor ingresar una ubicacion numerica mayor a 0 para la ubicacion");
+		}
+		if(precio < 0) {
+			throw new RuntimeException("Por favor ingresar un precio mayor a 0 para la entrada");
+		}
+		if(nombreSede == null || nombreSede.isEmpty()) {
+			throw new RuntimeException("Por favor ingresar de que sede es la entrada");
+		}
 		this.contraseña = contraseña;
 		this.categoria = categoria;
 		this.codigo = codigo;
@@ -54,7 +78,6 @@ public class Entrada implements IEntrada  {
 		if(this.categoria.equals("Baja")) {
 			precioFinal += this.precio * 0.5;
 		}
-		System.out.println(precioFinal);
 		return precioFinal;
 	}
 

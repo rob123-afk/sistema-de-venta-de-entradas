@@ -87,10 +87,10 @@ public class Espectaculo {
 				funcionesListadas.append(String.format(" - (%s) %s - %d/%d\n", fecha, sede.devolverNombre(), vendidas, capacidad));
 			}else if (sede instanceof Teatro || sede instanceof Miniestadio) {
 				funcionesListadas.append(" - (").append(fecha).append(") ").append(sede.devolverNombre()).append(" - ");
-				int vip = funcion.entradasVendidasPorSector("VIP");
-				int comun = funcion.entradasVendidasPorSector("Comun");
-				int baja = funcion.entradasVendidasPorSector("Baja");
-				int alta = funcion.entradasVendidasPorSector("Alta");
+				int vip = funcion.entradasVendidasPorSector("Platea VIP");
+				int comun = funcion.entradasVendidasPorSector("Platea Comun");
+				int baja = funcion.entradasVendidasPorSector("Platea Baja");
+				int alta = funcion.entradasVendidasPorSector("Platea Alta");
 				
 				int capacidadVIP =  sede.capacidadPorSector("VIP");
 				int capacidadComun = sede.capacidadPorSector("Comun");
@@ -98,7 +98,7 @@ public class Espectaculo {
 				int capacidadAlta = sede.capacidadPorSector("Alta");
 				
 				funcionesListadas.append(String.format("VIP: %d/%d | Comun: %d/%d | Baja: %d/%d | Alta: %d/%d\n"
-						 ,vip, capacidadVIP, comun,capacidadComun,baja,capacidadBaja,alta,capacidadAlta));
+						 ,vip,capacidadVIP,comun,capacidadComun,baja,capacidadBaja,alta,capacidadAlta));
 				
 			}
 		}

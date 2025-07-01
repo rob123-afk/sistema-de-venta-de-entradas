@@ -13,6 +13,15 @@ public class Teatro extends Sede {
 		if(asientosPorFila <=0) {
 			throw new RuntimeException("Los asientos por fila deben ser positivos");
 		}
+		if(sectores == null || sectores.length < 0 ) {
+			throw new RuntimeException("Por favor ingrese los sectores");
+		}
+		if(capacidad == null || capacidad.length < 0) {
+			throw new RuntimeException("Por favor ingrese la capacidad de los sectores");
+		}
+		if(porcentajeAdicional == null || porcentajeAdicional.length < 0) {
+			throw new RuntimeException("Por favor ingrese los porcentajes adicionales de las consumiciones para los sectores");
+		}
 		this.asientosPorFila = asientosPorFila;
 		this.capacidad = capacidad;
 		this.sectores = sectores;
@@ -35,23 +44,23 @@ public class Teatro extends Sede {
 	@Override
 	
 	public int capacidadPorSector(String nombreSector) {
-	if(sectores == null || capacidad == null) {
-		throw new RuntimeException("Capacidad y/o sectores no se inicializaron correctamente");
-		}
-	if(sectores.length != capacidad.length) {
-		throw new RuntimeException("Los arreglos de sectores y capacidad no coinciden");
-	}
-	if (nombreSector == null) {
-		throw new RuntimeException("El nombre del sector es invalido");
-	}
-	int capacidadBuscada = 0;
-	for (int i = 0; i<sectores.length-1; i++) {
-		if (nombreSector.equals(sectores[i])) {
-			capacidadBuscada = capacidad[i];
+		if(sectores == null || capacidad == null) {
+			throw new RuntimeException("Capacidad y/o sectores no se inicializaron correctamente");
 			}
+		if(sectores.length != capacidad.length) {
+			throw new RuntimeException("Los arreglos de sectores y capacidad no coinciden");
 		}
-	return capacidadBuscada;
-	}
+		if (nombreSector == null) {
+			throw new RuntimeException("El nombre del sector es invalido");
+		}
+		int capacidadBuscada = 0;
+		   for (int i = 0; i < sectores.length; i++) {
+			   if (normalizarSector(nombreSector).equals(normalizarSector(sectores[i]))){
+		             capacidadBuscada += capacidad[i];
+		        }
+		    }
+		return capacidadBuscada;
+		}
 	
 	public int devolverCapacidadTotal() {
 		int total = 0;
@@ -60,5 +69,28 @@ public class Teatro extends Sede {
 		}
 		return total;
 	}
-
+	
+	public String normalizarSector(String sector) {
+		if (sector == null) return "";
+		sector = sector.trim().toLowerCase();
+		switch (sector) {
+		case "vip":
+		case "platea vip":
+			return "VIP";
+		case "comun":
+		case "común":
+		case "platea comun":
+		case "platea común":
+			return "Comun";
+		case "baja":
+		case "platea baja":
+			return "Baja";
+		case "alta":
+		case "platea alta":
+			return "Alta";
+		default:
+			return sector;
+		}
+	}
+	
 }

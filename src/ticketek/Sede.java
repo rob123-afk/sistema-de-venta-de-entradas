@@ -10,7 +10,15 @@ public abstract class Sede {
 	 
 	 
 	 public Sede(String nombre,String direccion, int capacidad){
-		 
+		 if(nombre == null || nombre.isEmpty()) {
+			 throw new RuntimeException("Por favor ingrese el nombre de la sede");
+		 }
+		 if(direccion == null || direccion.isEmpty()) {
+			 throw new RuntimeException("Por favor escriba la dirrecion de la sede");
+		 }
+		 if(capacidad <= 0) {
+			 throw new RuntimeException("Por favor ingrese una capacidad para la sede que sea mayor a cero");
+		 }
 		 this.nombre=nombre;
 		 this.direccion=direccion;
 		 this.capacidad=capacidad;

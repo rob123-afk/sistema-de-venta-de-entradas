@@ -15,6 +15,15 @@ public class Miniestadio extends Sede{
 		 if(asientosPorFila <= 0) {
 			 throw new RuntimeException("Los asientos por fila deben ser positivos");
 		 }
+		 if(sectores == null || sectores.length < 0 ) {
+				throw new RuntimeException("Por favor ingrese los sectores");
+			}
+		 if(capacidad == null || capacidad.length < 0) {
+				throw new RuntimeException("Por favor ingrese la capacidad de los sectores");
+			}
+		 if(porcentajeAdicional == null || porcentajeAdicional.length < 0) {
+				throw new RuntimeException("Por favor ingrese los porcentajes adicionales de las consumiciones para los sectores");
+			}
 		 this.consumicion = consumicion;
 		 this.asientosPorFila = asientosPorFila;
 		 this.cantidadPuestos = cantidadPuestos;
@@ -48,8 +57,8 @@ public class Miniestadio extends Sede{
 		}
 		int capacidadBuscada = 0;
 		   for (int i = 0; i < sectores.length; i++) {
-		        if (nombreSector.equals(sectores[i])) {
-		             capacidadBuscada = capacidad[i];
+			   if (normalizarSector(nombreSector).equals(normalizarSector(sectores[i]))){
+		             capacidadBuscada += capacidad[i];
 		        }
 		    }
 		return capacidadBuscada;
@@ -81,7 +90,28 @@ public class Miniestadio extends Sede{
     }
 
 
-
+	public String normalizarSector(String sector) {
+		if (sector == null) return "";
+		sector = sector.trim().toLowerCase();
+		switch (sector) {
+		case "vip":
+		case "platea vip":
+			return "VIP";
+		case "comun":
+		case "común":
+		case "platea comun":
+		case "platea común":
+			return "Comun";
+		case "baja":
+		case "platea baja":
+			return "Baja";
+		case "alta":
+		case "platea alta":
+			return "Alta";
+		default:
+			return sector;
+		}
+	}
 
 	public String[] tomarSectores() {
 		return this.sectores;
